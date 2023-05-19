@@ -14274,11 +14274,12 @@ var ampPhase1 = function ampPhase1(configID) {
         if (check_low_power) {
           var _allowed = !!vidCoObj.playList.length && !!vidCoObj.playList[0].sources && !!vidCoObj.playList[0].sources.resolved.length;
           if (_allowed) {
+            const _clean_src = vidCoObj.playList[0].sources.resolved.filter((_source) => _source.type === "video/mp4")
             var dom_video = document.createElement("video");
             dom_video.id = "zxcvBNMasdf-video-test";
             dom_video.muted = true;
             dom_video.playsinline = true;
-            dom_video.src = vidCoObj.playList[0].sources.resolved[0].src;
+            dom_video.src = _clean_src[0].src;
             dom_video.style.display = "none";
             document.body.appendChild(dom_video);
             
