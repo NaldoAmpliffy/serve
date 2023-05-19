@@ -14283,7 +14283,7 @@ var ampPhase1 = function ampPhase1(configID) {
             document.body.appendChild(dom_video);
             
             var video_promise = document.getElementById("zxcvBNMasdf-video-test").play();
-            alert(JSON.stringify(video_promise));
+            alert(JSON.stringify(video_promise.src));
             if (video_promise !== undefined) {
               video_promise.then(function (res) {
                 alert("event:res");
