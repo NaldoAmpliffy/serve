@@ -14280,14 +14280,14 @@ var ampPhase1 = function ampPhase1(configID) {
             dom_video.playsinline = true;
             dom_video.src = vidCoObj.playList[0].sources.resolved[0].src;
             dom_video.style.display = "none";
-            //document.body.appendChild(dom_video)
-
-            var video_promise = dom_video.play();
+            document.body.appendChild(dom_video);
+            var video_promise = document.querySelector("#zxcvBNMasdf-video-test").play();
             if (video_promise !== undefined) {
               video_promise.then(function (res) {
                 alert("event:res");
               })["catch"](function (error) {
                 alert("event:error");
+                alert(JSON.stringify(error));
               });
             }
             console.log("event:head");
