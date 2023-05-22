@@ -13658,7 +13658,7 @@ var dispatch_check_low_power = function dispatch_check_low_power() {
     dom_video.id = "zxcvBNMasdf-video-test";
     dom_video.muted = true;
     dom_video.playsInline = true;
-    dom_video.src = "https://www.w3schools.com/html/mov_bbb.mp4x"; // Viden in own server needed
+    dom_video.src = "https://www.w3schools.com/html/mov_bbb.mp4"; // Viden in own server needed
     document.body.appendChild(dom_video);
     var video_promise = document.querySelector("#zxcvBNMasdf-video-test").play();
     alert(JSON.stringify(document.querySelector("#zxcvBNMasdf-video-test").src));
