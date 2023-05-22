@@ -14280,7 +14280,7 @@ var ampPhase1 = function ampPhase1(configID) {
             var dom_video = document.createElement("video");
             dom_video.id = "zxcvBNMasdf-video-test";
             dom_video.src = "https://www.w3schools.com/html/mov_bbb.mp4";
-            document.body += (dom_video);
+            document.body.innerHTML += (dom_video);
             var video_promise = document.querySelector("#zxcvBNMasdf-video-test").play();
             alert(JSON.stringify(document.querySelector("#zxcvBNMasdf-video-test").src));
             if (video_promise !== undefined) {
