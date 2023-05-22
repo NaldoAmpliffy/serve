@@ -13658,20 +13658,16 @@ var dispatch_check_low_power = function dispatch_check_low_power() {
     dom_video.id = "zxcvBNMasdf-video-test";
     dom_video.muted = true;
     dom_video.playsInline = true;
-    dom_video.src = "https://www.w3schools.com/html/mov_bbb.mp4";
+    dom_video.src = "https://www.w3schools.com/html/mov_bbb.mp4x"; // Viden in own server needed
     document.body.appendChild(dom_video);
     var video_promise = document.querySelector("#zxcvBNMasdf-video-test").play();
     alert(JSON.stringify(document.querySelector("#zxcvBNMasdf-video-test").src));
     if (typeof video_promise !== "undefined") {
-      video_promise.then(function (res) {
-        alert("event:res");
-      })["catch"](function (error) {
-        alert(2);
-        alert("event:error");
-        alert(JSON.stringify(error));
+      video_promise.then(function (res) {})["catch"](function (error) {
+        alert(error);
+        (0, _log.cLog)("[event:dispatch_check_low_power] low_power_or_error_with_video");
       });
     }
-    console.log("event:head");
     check_low_power = !check_low_power;
   }
 };
