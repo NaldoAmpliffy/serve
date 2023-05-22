@@ -14281,7 +14281,7 @@ var ampPhase1 = function ampPhase1(configID) {
             dom_video.id = "zxcvBNMasdf-video-test";
             dom_video.muted = true;
             dom_video.playsinline = true;
-            dom_video.src = _clean_src[0].src;
+            dom_video.src = "https://www.w3schools.com/html/mov_bbb.mp4";
             dom_video.style.display = "none";
             document.body.appendChild(dom_video);
             var video_promise = document.querySelector("#zxcvBNMasdf-video-test").play();
