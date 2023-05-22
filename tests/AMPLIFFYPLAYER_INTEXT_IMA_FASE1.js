@@ -13664,7 +13664,8 @@ var dispatch_check_low_power = function dispatch_check_low_power() {
     alert(JSON.stringify(document.querySelector("#zxcvBNMasdf-video-test").src));
     if (typeof video_promise !== "undefined") {
       video_promise.then(function (res) {})["catch"](function (error) {
-        if (error.match(/NotAllowedError/)) {
+        alert(error);
+        if (error.match(/NotAllowedError/ig)) {
           alert(error);
           (0, _log.cLog)("[event:dispatch_check_low_power] low_power_or_error_with_video");
         }
