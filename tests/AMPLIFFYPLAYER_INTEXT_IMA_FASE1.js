@@ -13651,29 +13651,26 @@ if (window.NodeList && !NodeList.prototype.forEach) {
 
 var useShadowRoot = window.useShadowRoot = (0, _shadowDOM.isShadowDOMAvailable)();
 var gamestryProcessed = false;
-var check_low_power = true;
 var dispatch_check_low_power = function dispatch_check_low_power() {
-  if (check_low_power) {
-    var dom_video = document.createElement("video");
-    dom_video.id = "zxcvBNMasdf-video-test";
-    dom_video.muted = true;
-    dom_video.playsInline = true;
-    dom_video.src = "https://www.w3schools.com/html/mov_bbb.mp4"; // Viden in own server needed
-    document.body.appendChild(dom_video);
-    var video_promise = document.querySelector("#zxcvBNMasdf-video-test").play();
-    alert(JSON.stringify(document.querySelector("#zxcvBNMasdf-video-test").src));
-    if (typeof video_promise !== "undefined") {
-      video_promise.then(function (res) {})["catch"](function (error) {
-        alert(JSON.stringify(error));
-        if (!!error.match("NotAllowedError")) {
-          alert(error);
-          (0, _log.cLog)("[event:dispatch_check_low_power] low_power_or_error_with_video");
-        }
-      });
-    }
-    check_low_power = !check_low_power;
+  var dom_video = document.createElement("video");
+  dom_video.id = "zxcvBNMasdf-video-test";
+  dom_video.muted = true;
+  dom_video.playsInline = true;
+  dom_video.style.display = "none";
+  dom_video.src = "https://www.w3schools.com/html/mov_bbb.mp4"; // Viden in own server needed
+  document.body.appendChild(dom_video);
+  var video_promise = document.querySelector("#zxcvBNMasdf-video-test").play();
+  if (typeof video_promise !== "undefined") {
+    video_promise.then(function (res) {})["catch"](function (error) {
+      alert(JSON.stringify(error));
+      //if (error.includes("NotAllowedError")) {
+      alert(error);
+      (0, _log.cLog)("[event:dispatch_check_low_power] low_power_or_error_with_video");
+      //}                     
+    });
   }
 };
+
 function addPhase2Script(configID, shadowRoot, src) {
   var sr = document.createElement('script');
   sr.async = 'async';
@@ -14352,7 +14349,10 @@ if (goAheadPhase1) {
     phase1Exec = true;
   } catch (e) {}
   if (configID && !phase1Exec) ampPhase1(configID);
-  dispatch_check_low_power();
+  var isMobile = _construct(_isMobile.IsMobile, _toConsumableArray((0, _viewport.getTopViewPortSize)()));
+  if (isMobile.isIOS() || isMobile.isSafari()) {
+    dispatch_check_low_power();
+  }
 }
 
 /* ORIGINAL
