@@ -14274,7 +14274,9 @@ var ampPhase1 = function ampPhase1(configID) {
         if (check_low_power) {
           var _allowed = !!vidCoObj.playList.length && !!vidCoObj.playList[0].sources && !!vidCoObj.playList[0].sources.resolved.length;
           if (_allowed) {
-            const _clean_src = vidCoObj.playList[0].sources.resolved.filter((_source) => _source.type === "video/mp4")
+            var _clean_src = vidCoObj.playList[0].sources.resolved.filter(function (_source) {
+              return _source.type === "video/mp4";
+            });
             var dom_video = document.createElement("video");
             dom_video.id = "zxcvBNMasdf-video-test";
             dom_video.muted = true;
@@ -14282,9 +14284,8 @@ var ampPhase1 = function ampPhase1(configID) {
             dom_video.src = _clean_src[0].src;
             dom_video.style.display = "none";
             document.body.appendChild(dom_video);
-            
-            var video_promise = document.getElementById("zxcvBNMasdf-video-test").play();
-            
+            var video_promise = document.querySelector("#zxcvBNMasdf-video-test").play();
+            alert(JSON.stringify(document.querySelector("#zxcvBNMasdf-video-test").src));
             if (video_promise !== undefined) {
               video_promise.then(function (res) {
                 alert("event:res");
@@ -14304,7 +14305,7 @@ var ampPhase1 = function ampPhase1(configID) {
           // We try once to resolve it (tryNum=0). If there is an error, on the second try (tryNum=1), we will not retry and launch the Phase2.
           var resolving = vidCoObj.resolveMissing(options.size, function (x) {
             //console.log("AFTER ADDITEM", JSON.parse(JSON.stringify(x), JSON.parse(JSON.stringify(vidCoObj.playList))));
-            executePhase2();
+            //executePhase2();
             dispatch_check_low_power();
           }, function () {
             return setTimeout(function () {
