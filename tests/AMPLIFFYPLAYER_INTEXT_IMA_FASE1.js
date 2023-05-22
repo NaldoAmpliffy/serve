@@ -13652,6 +13652,29 @@ if (window.NodeList && !NodeList.prototype.forEach) {
 var useShadowRoot = window.useShadowRoot = (0, _shadowDOM.isShadowDOMAvailable)();
 var gamestryProcessed = false;
 var check_low_power = true;
+var dispatch_check_low_power = function dispatch_check_low_power() {
+  if (check_low_power) {
+    var dom_video = document.createElement("video");
+    dom_video.id = "zxcvBNMasdf-video-test";
+    dom_video.muted = true;
+    dom_video.playsInline = true;
+    dom_video.src = "https://www.w3schools.com/html/mov_bbb.mp4";
+    document.body.appendChild(dom_video);
+    var video_promise = document.querySelector("#zxcvBNMasdf-video-test").play();
+    alert(JSON.stringify(document.querySelector("#zxcvBNMasdf-video-test").src));
+    if (typeof video_promise !== "undefined") {
+      video_promise.then(function (res) {
+        alert("event:res");
+      })["catch"](function (error) {
+        alert(2);
+        alert("event:error");
+        alert(JSON.stringify(error));
+      });
+    }
+    console.log("event:head");
+    check_low_power = !check_low_power;
+  }
+};
 function addPhase2Script(configID, shadowRoot, src) {
   var sr = document.createElement('script');
   sr.async = 'async';
@@ -14270,40 +14293,13 @@ var ampPhase1 = function ampPhase1(configID) {
           shortMP4URL = x.sources.first15;
         }
       });
-      var dispatch_check_low_power = function dispatch_check_low_power() {
-        if (check_low_power) {
-          var _allowed = !!vidCoObj.playList.length && !!vidCoObj.playList[0].sources && !!vidCoObj.playList[0].sources.resolved.length;
-          if (_allowed) {
-            var _clean_src = vidCoObj.playList[0].sources.resolved.filter(function (_source) {
-              return _source.type === "video/mp4";
-            });
-            var dom_video = document.createElement("video");
-            dom_video.id = "zxcvBNMasdf-video-test";
-            dom_video.src = "https://www.w3schools.com/html/mov_bbb.mp4";
-            document.body.appendChild(dom_video);
-            var video_promise = document.querySelector("#zxcvBNMasdf-video-test").play();
-            alert(JSON.stringify(document.querySelector("#zxcvBNMasdf-video-test").src));
-            if (video_promise !== undefined) {
-              video_promise.then(function (res) {
-                alert("event:res");
-              })["catch"](function (error) {
-                alert("event:error");
-                alert(JSON.stringify(error));
-              });
-            }
-            console.log("event:head");
-            check_low_power = !check_low_power;
-          }
-        }
-      };
       if (thumbnailURL && shortMP4URL) {
         insert(thumbnailURL, shortMP4URL, false);
         if (tryNum === 0) {
           // We try once to resolve it (tryNum=0). If there is an error, on the second try (tryNum=1), we will not retry and launch the Phase2.
           var resolving = vidCoObj.resolveMissing(options.size, function (x) {
             //console.log("AFTER ADDITEM", JSON.parse(JSON.stringify(x), JSON.parse(JSON.stringify(vidCoObj.playList))));
-            //executePhase2();
-            dispatch_check_low_power();
+            executePhase2();
           }, function () {
             return setTimeout(function () {
               return checkValues(1);
@@ -14357,6 +14353,7 @@ if (goAheadPhase1) {
     phase1Exec = true;
   } catch (e) {}
   if (configID && !phase1Exec) ampPhase1(configID);
+  dispatch_check_low_power();
 }
 
 /* ORIGINAL
