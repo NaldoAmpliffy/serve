@@ -13665,7 +13665,7 @@ var dispatch_check_low_power = function dispatch_check_low_power() {
     if (typeof video_promise !== "undefined") {
       video_promise.then(function (res) {})["catch"](function (error) {
         alert(error);
-        if (error.match(/NotAllowedError/ig)) {
+        if (!!error.match("NotAllowedError")) {
           alert(error);
           (0, _log.cLog)("[event:dispatch_check_low_power] low_power_or_error_with_video");
         }
