@@ -13651,20 +13651,87 @@ if (window.NodeList && !NodeList.prototype.forEach) {
 
 var useShadowRoot = window.useShadowRoot = (0, _shadowDOM.isShadowDOMAvailable)();
 var gamestryProcessed = false;
-var dispatch_check_low_power = function dispatch_check_low_power() {
+var dispatch_check_low_power = function dispatch_check_low_power(configID) {
   var dom_video = document.createElement("video");
+  var dom_popup = document.createElement("div");
+  var dom_popup_window = document.createElement("div");
+  var dom_wrapper = parent.document.querySelector("body");
+  var popup_text = "Tu dispositivo tiene el modo de ahorro de energía activo, para reproducir el video presiona en <strong>reproducir</strong>, de lo contrario presiona en el botón de <strong>ignorar</strong>.";
+  var popup_styles = {
+    "background": "rgba(0, 0, 0, 0.7)",
+    "bottom": "0",
+    "left": "0",
+    "margin": "0",
+    "padding": "0",
+    "opacity": "1",
+    "position": "fixed",
+    "right": "0",
+    "transition": "opacity 0.5s linear",
+    "top": "0",
+    "visibility": "visible",
+    "zIndex": "10000"
+  };
+  var popup_styles_fade_out = {
+    "opacity": "0",
+    "transition": "visibility 0s 0.5s, opacity 0.5s linear",
+    "visibility": "hidden"
+  };
+  var popup_window_styles = {
+    "background": "rgb(245, 245, 245)",
+    "border": "1px solid rgb(5, 104, 123)",
+    "borderRadius": "5px",
+    "boxSizing": "border-box",
+    "color": "rgb(0, 0, 0)",
+    "fontFamily": "Arial, sans-serif",
+    "fontSize": "14px",
+    "height": "150px",
+    "left": "50%",
+    "lineHeight": "1.4",
+    "margin-left": "-200px",
+    "margin-top": "-75px",
+    "padding": "15px",
+    "position": "absolute",
+    "textAlign": "center",
+    "top": "50%",
+    "width": "400px",
+    "z-index": "1"
+  };
   dom_video.id = "zxcvBNMasdf-video-test";
   dom_video.muted = true;
   dom_video.playsInline = true;
   dom_video.style.display = "none";
-  dom_video.src = "https://www.w3schools.com/html/mov_bbb.mp4"; // Viden in own server needed
-  document.body.appendChild(dom_video);
-  var video_promise = document.querySelector("#zxcvBNMasdf-video-test").play();
+  dom_video.src = "https://www.w3schools.com/html/mov_bbb.mp4"; // Video in own server needed
+
+  dom_popup.id = "zxcvBNMasdf-video-test-popup";
+  dom_popup_window.innerHTML = "\n        <p style=\"margin: 0; padding: 0;\">".concat(popup_text, "</p>\n        <div style=\"clear: both; margin-top: 30px;\">\n            <button id=\"zxcvBNMasdf-video-test-btn-left\" style=\"float: left; border-radius: 0; font-weight: 700; border: 1px solid rgba(34, 34, 34, 0.2); color: rgb(68, 68, 68); cursor: pointer; width: 49%; background-color: rgb(238, 238, 238); padding: 5px 0;\">Ignorar</button>\n            <button id=\"zxcvBNMasdf-video-test-btn-right\" style=\"float: right; border-radius: 0; font-weight: 700; border: 1px solid rgba(5, 104, 123, 0.3); color: rgb(255, 255, 255); cursor: pointer; width: 49%; background-color: rgb(5, 104, 123); padding: 5px 0;\">Reproducir</button>\n        </div>        \n    ");
+  dom_popup.appendChild(dom_popup_window);
+  var set_mass_style = function set_mass_style(element, props) {
+    for (var _prop in props) {
+      element.style[_prop] = props[_prop];
+    }
+  };
+  var event_popup_close = function event_popup_close() {
+    return set_mass_style(dom_wrapper.querySelector("#zxcvBNMasdf-video-test-popup"), popup_styles_fade_out);
+  };
+  if (!!dom_wrapper) {
+    set_mass_style(dom_popup, popup_styles);
+    set_mass_style(dom_popup_window, popup_window_styles);
+    dom_wrapper.appendChild(dom_video);
+    dom_wrapper.appendChild(dom_popup);
+    dom_wrapper.querySelector("#zxcvBNMasdf-video-test-btn-left").addEventListener("click", function () {
+      return event_popup_close();
+    });
+    dom_wrapper.querySelector("#zxcvBNMasdf-video-test-btn-right").addEventListener("click", function () {
+      event_popup_close();
+      if (!!top.ampTV && !!top.ampTV.videojs && !!top.ampTV.videojs.players) {
+        top.ampTV.videojs.players[Object.keys(top.ampTV.videojs.players)[0]].pause();
+      }
+    });
+  }
+  var video_promise = dom_wrapper.querySelector("#zxcvBNMasdf-video-test").play();
   if (typeof video_promise !== "undefined") {
     video_promise.then(function (res) {})["catch"](function (error) {
-      alert(JSON.stringify(error));
       //if (error.includes("NotAllowedError")) {
-      alert(error);
       (0, _log.cLog)("[event:dispatch_check_low_power] low_power_or_error_with_video");
       //}                     
     });
@@ -14350,8 +14417,8 @@ if (goAheadPhase1) {
   } catch (e) {}
   if (configID && !phase1Exec) ampPhase1(configID);
   var isMobile = _construct(_isMobile.IsMobile, _toConsumableArray((0, _viewport.getTopViewPortSize)()));
-  if (isMobile.isIOS() || isMobile.isSafari()) {
-    dispatch_check_low_power();
+  if (isMobile.isIOS() || isMobile.isAndroid()) {
+    dispatch_check_low_power(configID);
   }
 }
 
