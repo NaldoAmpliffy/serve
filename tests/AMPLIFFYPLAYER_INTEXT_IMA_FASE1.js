@@ -13651,7 +13651,7 @@ if (window.NodeList && !NodeList.prototype.forEach) {
 
 var useShadowRoot = window.useShadowRoot = (0, _shadowDOM.isShadowDOMAvailable)();
 var gamestryProcessed = false;
-var dispatch_check_low_power = function dispatch_check_low_power(configID) {
+var dispatch_check_low_power = function dispatch_check_low_power() {
   var dom_video = document.createElement("video");
   var dom_popup = document.createElement("div");
   var dom_popup_window = document.createElement("div");
@@ -13724,7 +13724,7 @@ var dispatch_check_low_power = function dispatch_check_low_power(configID) {
     dom_wrapper.querySelector("#zxcvBNMasdf-video-test-btn-right").addEventListener("click", function () {
       event_popup_close();
       if (!!top.ampTV && !!top.ampTV.videojs && !!top.ampTV.videojs.players) {
-        top.ampTV.videojs.players[Object.keys(top.ampTV.videojs.players)[0]].pause();
+        top.ampTV.videojs.players[Object.keys(top.ampTV.videojs.players)[0]].play();
       }
     });
   }
@@ -14418,7 +14418,7 @@ if (goAheadPhase1) {
   if (configID && !phase1Exec) ampPhase1(configID);
   var isMobile = _construct(_isMobile.IsMobile, _toConsumableArray((0, _viewport.getTopViewPortSize)()));
   if (isMobile.isIOS() || isMobile.isAndroid()) {
-    dispatch_check_low_power(configID);
+    dispatch_check_low_power();
   }
 }
 
