@@ -13622,6 +13622,9 @@ function _get_text_to_translate2(word) {
 function _check_lang2() {
   if (typeof window.navigator.language !== "undefined") {
     _classPrivateFieldSet(this, _current_lang, window.navigator.language.split("-")[0].toLowerCase());
+    if (_classPrivateFieldGet(this, _current_lang) !== "en" && _classPrivateFieldGet(this, _current_lang) !== "es") {
+      _classPrivateFieldSet(this, _current_lang, "en");
+    }
   } else {
     _classPrivateFieldSet(this, _current_lang, "en");
   }
