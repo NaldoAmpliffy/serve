@@ -13439,7 +13439,7 @@ var Gamestry = /*#__PURE__*/function () {
 }();
 exports.Gamestry = Gamestry;
 
-},{"./consent/consent":54,"./dom/isMobile":59,"./dom/viewport":60,"./log/log":62,"./vidCo/vast":87}],62:[function(require,module,exports){
+},{"./consent/consent":54,"./dom/isMobile":59,"./dom/viewport":60,"./log/log":62,"./vidCo/vast":89}],62:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13480,6 +13480,253 @@ function imgLog(url, done, fail) {
 }
 
 },{}],63:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+Object.defineProperty(exports, "LowPower", {
+  enumerable: true,
+  get: function get() {
+    return _lowPower["default"];
+  }
+});
+var _lowPower = _interopRequireDefault(require("./lowPower"));
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+},{"./lowPower":64}],64:[function(require,module,exports){
+"use strict";
+
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+var _isMobile = require("../dom/isMobile");
+var _viewport = require("../dom/viewport");
+var _log = require("../log/log");
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+function _construct(Parent, args, Class) { if (_isNativeReflectConstruct()) { _construct = Reflect.construct.bind(); } else { _construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) _setPrototypeOf(instance, Class.prototype); return instance; }; } return _construct.apply(null, arguments); }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _classPrivateMethodInitSpec(obj, privateSet) { _checkPrivateRedeclaration(obj, privateSet); privateSet.add(obj); }
+function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedeclaration(obj, privateMap); privateMap.set(obj, value); }
+function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
+function _classPrivateFieldGet(receiver, privateMap) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
+function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
+function _classPrivateMethodGet(receiver, privateSet, fn) { if (!privateSet.has(receiver)) { throw new TypeError("attempted to get private field on non-instance"); } return fn; }
+function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "set"); _classApplyDescriptorSet(receiver, descriptor, value); return value; }
+function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!privateMap.has(receiver)) { throw new TypeError("attempted to " + action + " private field on non-instance"); } return privateMap.get(receiver); }
+function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } }
+var _dom_wrapper = /*#__PURE__*/new WeakMap();
+var _dom_wrapper_shadow = /*#__PURE__*/new WeakMap();
+var _data_video = /*#__PURE__*/new WeakMap();
+var _set_mass_style = /*#__PURE__*/new WeakSet();
+var _event_popup_close = /*#__PURE__*/new WeakSet();
+var _event_popup_open = /*#__PURE__*/new WeakSet();
+var _add_dom_events = /*#__PURE__*/new WeakSet();
+var _add_dom_elements = /*#__PURE__*/new WeakSet();
+var _check_battery_mode = /*#__PURE__*/new WeakSet();
+var _is_player_available = /*#__PURE__*/new WeakSet();
+var _get_player_available = /*#__PURE__*/new WeakSet();
+var _calc_popup_position = /*#__PURE__*/new WeakSet();
+var _execute = /*#__PURE__*/new WeakSet();
+var LowPower = /*#__PURE__*/function () {
+  function LowPower() {
+    _classCallCheck(this, LowPower);
+    _classPrivateMethodInitSpec(this, _execute);
+    _classPrivateMethodInitSpec(this, _calc_popup_position);
+    _classPrivateMethodInitSpec(this, _get_player_available);
+    _classPrivateMethodInitSpec(this, _is_player_available);
+    _classPrivateMethodInitSpec(this, _check_battery_mode);
+    _classPrivateMethodInitSpec(this, _add_dom_elements);
+    _classPrivateMethodInitSpec(this, _add_dom_events);
+    _classPrivateMethodInitSpec(this, _event_popup_open);
+    _classPrivateMethodInitSpec(this, _event_popup_close);
+    _classPrivateMethodInitSpec(this, _set_mass_style);
+    _classPrivateFieldInitSpec(this, _dom_wrapper, {
+      writable: true,
+      value: void 0
+    });
+    _classPrivateFieldInitSpec(this, _dom_wrapper_shadow, {
+      writable: true,
+      value: void 0
+    });
+    _classPrivateFieldInitSpec(this, _data_video, {
+      writable: true,
+      value: void 0
+    });
+    _classPrivateFieldSet(this, _dom_wrapper, parent.document.querySelector("body"));
+    _classPrivateFieldSet(this, _dom_wrapper_shadow, null);
+    _classPrivateFieldSet(this, _data_video, "data:video/mp4;base64,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");
+  }
+  _createClass(LowPower, [{
+    key: "dispatch_check_low_power",
+    value: function dispatch_check_low_power() {
+      var isMobile = _construct(_isMobile.IsMobile, _toConsumableArray((0, _viewport.getTopViewPortSize)()));
+      var can_exec = _classPrivateMethodGet(this, _is_player_available, _is_player_available2).call(this) && (isMobile.isIOS() || isMobile.isAndroid());
+      //const can_exec = this.#is_player_available()
+
+      if (can_exec) {
+        var _classPrivateFieldGet2, _classPrivateFieldGet3, _classPrivateFieldGet4;
+        if (!((_classPrivateFieldGet2 = _classPrivateFieldGet(this, _dom_wrapper_shadow)) !== null && _classPrivateFieldGet2 !== void 0 && (_classPrivateFieldGet3 = _classPrivateFieldGet2.querySelector("#zxcvBNMasdf-video-test-popup")) !== null && _classPrivateFieldGet3 !== void 0 && _classPrivateFieldGet3.id) && !((_classPrivateFieldGet4 = _classPrivateFieldGet(this, _dom_wrapper).querySelector("#zxcvBNMasdf-video-test")) !== null && _classPrivateFieldGet4 !== void 0 && _classPrivateFieldGet4.id)) {
+          _classPrivateMethodGet(this, _execute, _execute2).call(this);
+        }
+      }
+    }
+  }]);
+  return LowPower;
+}();
+exports["default"] = LowPower;
+function _set_mass_style2(element, props) {
+  for (var _prop in props) {
+    element.style[_prop] = props[_prop];
+  }
+}
+function _event_popup_close2() {
+  var _classPrivateFieldGet5;
+  var popup_styles_fade_out = {
+    "opacity": "0",
+    "transition": "visibility 0s 0.5s, opacity 0.5s linear",
+    "visibility": "hidden"
+  };
+  _classPrivateMethodGet(this, _set_mass_style, _set_mass_style2).call(this, (_classPrivateFieldGet5 = _classPrivateFieldGet(this, _dom_wrapper_shadow)) === null || _classPrivateFieldGet5 === void 0 ? void 0 : _classPrivateFieldGet5.querySelector("#zxcvBNMasdf-video-test-popup"), popup_styles_fade_out);
+}
+function _event_popup_open2() {
+  var _classPrivateFieldGet6;
+  var popup_styles_fade_in = {
+    "opacity": "1",
+    "transition": "visibility 0s 0.5s, opacity 0.5s linear",
+    "visibility": "visible"
+  };
+  _classPrivateMethodGet(this, _set_mass_style, _set_mass_style2).call(this, (_classPrivateFieldGet6 = _classPrivateFieldGet(this, _dom_wrapper_shadow)) === null || _classPrivateFieldGet6 === void 0 ? void 0 : _classPrivateFieldGet6.querySelector("#zxcvBNMasdf-video-test-popup"), popup_styles_fade_in);
+}
+function _add_dom_events2() {
+  var _classPrivateFieldGet7,
+    _this = this,
+    _classPrivateFieldGet8;
+  (_classPrivateFieldGet7 = _classPrivateFieldGet(this, _dom_wrapper_shadow)) === null || _classPrivateFieldGet7 === void 0 ? void 0 : _classPrivateFieldGet7.querySelector("#zxcvBNMasdf-video-test-btn-left").addEventListener("click", function () {
+    return _classPrivateMethodGet(_this, _event_popup_close, _event_popup_close2).call(_this);
+  });
+  (_classPrivateFieldGet8 = _classPrivateFieldGet(this, _dom_wrapper_shadow)) === null || _classPrivateFieldGet8 === void 0 ? void 0 : _classPrivateFieldGet8.querySelector("#zxcvBNMasdf-video-test-btn-right").addEventListener("click", function () {
+    _classPrivateMethodGet(_this, _event_popup_close, _event_popup_close2).call(_this);
+    if (_classPrivateMethodGet(_this, _is_player_available, _is_player_available2).call(_this)) {
+      _classPrivateMethodGet(_this, _get_player_available, _get_player_available2).call(_this).play();
+    }
+  });
+}
+function _add_dom_elements2(elements) {
+  var _iterator = _createForOfIteratorHelper(elements),
+    _step;
+  try {
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      var element = _step.value;
+      _classPrivateFieldGet(this, _dom_wrapper).appendChild(element);
+    }
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
+}
+function _check_battery_mode2() {
+  var _this2 = this;
+  var video_promise = _classPrivateFieldGet(this, _dom_wrapper).querySelector("#zxcvBNMasdf-video-test").play();
+  if (typeof video_promise !== "undefined") {
+    video_promise.then(function (res) {})["catch"](function (error) {
+      var _classPrivateFieldGet9;
+      if (!((_classPrivateFieldGet9 = _classPrivateFieldGet(_this2, _dom_wrapper_shadow)) !== null && _classPrivateFieldGet9 !== void 0 && _classPrivateFieldGet9.id)) {
+        _classPrivateMethodGet(_this2, _event_popup_open, _event_popup_open2).call(_this2);
+        (0, _log.cLog)("[event:dispatch_check_low_power] low_power_or_error_with_video");
+      }
+    });
+  }
+}
+function _is_player_available2() {
+  return !!top.ampTV && !!top.ampTV.videojs && !!top.ampTV.videojs.players;
+}
+function _get_player_available2() {
+  return top.ampTV.videojs.players[Object.keys(top.ampTV.videojs.players)[0]];
+}
+function _calc_popup_position2(element) {
+  var _classPrivateFieldGet10, _classPrivateFieldGet11, _classPrivateFieldGet12;
+  var _player = _classPrivateMethodGet(this, _get_player_available, _get_player_available2).call(this);
+  _classPrivateFieldSet(this, _dom_wrapper_shadow, (_classPrivateFieldGet10 = _classPrivateFieldGet(this, _dom_wrapper).querySelector("#" + _player.id_.replace("content_video-", ""))) === null || _classPrivateFieldGet10 === void 0 ? void 0 : _classPrivateFieldGet10.shadowRoot);
+  if (!((_classPrivateFieldGet11 = _classPrivateFieldGet(this, _dom_wrapper_shadow)) !== null && _classPrivateFieldGet11 !== void 0 && (_classPrivateFieldGet12 = _classPrivateFieldGet11.querySelector("#zxcvBNMasdf-video-test-popup")) !== null && _classPrivateFieldGet12 !== void 0 && _classPrivateFieldGet12.id)) {
+    var _classPrivateFieldGet13;
+    (_classPrivateFieldGet13 = _classPrivateFieldGet(this, _dom_wrapper_shadow)) === null || _classPrivateFieldGet13 === void 0 ? void 0 : _classPrivateFieldGet13.querySelector(".vid-iframe-parent").appendChild(element);
+    _classPrivateMethodGet(this, _add_dom_events, _add_dom_events2).call(this);
+  }
+}
+function _execute2() {
+  var dom_video = document.createElement("video");
+  var dom_popup = document.createElement("div");
+  var dom_popup_window = document.createElement("div");
+  var popup_text = "Tu dispositivo tiene el modo de ahorro de energía activo, para reproducir el video presiona en <strong>reproducir</strong>, de lo contrario presiona en el botón de <strong>ignorar</strong>.";
+  var popup_styles = {
+    "background": "rgba(0, 0, 0, 0.7)",
+    "bottom": "0",
+    "left": "0",
+    "margin": "0",
+    "padding": "0",
+    "opacity": "0",
+    "position": "absolute",
+    "right": "0",
+    "transition": "opacity 0.5s linear",
+    "top": "0",
+    "visibility": "hidden",
+    "width": "100%",
+    "zIndex": "10000"
+  };
+  var popup_window_styles = {
+    "background": "rgb(245, 245, 245)",
+    "border": "1px solid rgb(5, 104, 123)",
+    "borderRadius": "5px",
+    "boxSizing": "border-box",
+    "color": "rgb(0, 0, 0)",
+    "fontFamily": "Arial, sans-serif",
+    "fontSize": "13px",
+    "height": "180px",
+    "left": "50%",
+    "lineHeight": "1.2",
+    "margin-left": "-100px",
+    "margin-top": "-90px",
+    "padding": "15px",
+    "position": "absolute",
+    "textAlign": "center",
+    "top": "50%",
+    "width": "200px",
+    "z-index": "1"
+  };
+  dom_video.id = "zxcvBNMasdf-video-test";
+  dom_video.muted = true;
+  dom_video.playsInline = true;
+  dom_video.style.display = "none";
+  dom_video.src = _classPrivateFieldGet(this, _data_video);
+  dom_popup.id = "zxcvBNMasdf-video-test-popup";
+  dom_popup_window.innerHTML = "\n            <p style=\"margin: 0; padding: 0;\">".concat(popup_text, "</p>\n            <div style=\"clear: both; margin-top: 30px;\">\n                <button id=\"zxcvBNMasdf-video-test-btn-left\" style=\"float: left; border-radius: 0; font-weight: 700; border: 1px solid rgba(34, 34, 34, 0.2); color: rgb(68, 68, 68); cursor: pointer; width: 49%; background-color: rgb(238, 238, 238); padding: 5px 0;\">Ignorar</button>\n                <button id=\"zxcvBNMasdf-video-test-btn-right\" style=\"float: right; border-radius: 0; font-weight: 700; border: 1px solid rgba(5, 104, 123, 0.3); color: rgb(255, 255, 255); cursor: pointer; width: 49%; background-color: rgb(5, 104, 123); padding: 5px 0;\">Reproducir</button>\n            </div>        \n        ");
+  dom_popup.appendChild(dom_popup_window);
+  if (!!_classPrivateFieldGet(this, _dom_wrapper)) {
+    _classPrivateMethodGet(this, _set_mass_style, _set_mass_style2).call(this, dom_popup, popup_styles);
+    _classPrivateMethodGet(this, _set_mass_style, _set_mass_style2).call(this, dom_popup_window, popup_window_styles);
+    _classPrivateMethodGet(this, _add_dom_elements, _add_dom_elements2).call(this, [dom_video]);
+    _classPrivateMethodGet(this, _calc_popup_position, _calc_popup_position2).call(this, dom_popup);
+    _classPrivateMethodGet(this, _check_battery_mode, _check_battery_mode2).call(this);
+  }
+}
+
+},{"../dom/isMobile":59,"../dom/viewport":60,"../log/log":62}],65:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13557,7 +13804,7 @@ var Intersection = /*#__PURE__*/function () {
 }();
 exports.Intersection = Intersection;
 
-},{}],64:[function(require,module,exports){
+},{}],66:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13605,7 +13852,7 @@ function getOffset(el) {
   };
 }
 
-},{"../log/log":62}],65:[function(require,module,exports){
+},{"../log/log":62}],67:[function(require,module,exports){
 "use strict";
 
 var _publisher = require("./publisher");
@@ -13623,6 +13870,7 @@ var _absolutePosition = require("./browser/absolutePosition");
 var _playerSize = require("./container/playerSize");
 var _domainWhitelist = require("./player/domainWhitelist");
 var _phase = require("./phase-2");
+var _mobile = require("./mobile");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 function _construct(Parent, args, Class) { if (_isNativeReflectConstruct()) { _construct = Reflect.construct.bind(); } else { _construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) _setPrototypeOf(instance, Class.prototype); return instance; }; } return _construct.apply(null, arguments); }
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
@@ -13651,93 +13899,6 @@ if (window.NodeList && !NodeList.prototype.forEach) {
 
 var useShadowRoot = window.useShadowRoot = (0, _shadowDOM.isShadowDOMAvailable)();
 var gamestryProcessed = false;
-var dispatch_check_low_power = function dispatch_check_low_power() {
-  var dom_video = document.createElement("video");
-  var dom_popup = document.createElement("div");
-  var dom_popup_window = document.createElement("div");
-  var dom_wrapper = parent.document.querySelector("body");
-  var popup_text = "Tu dispositivo tiene el modo de ahorro de energía activo, para reproducir el video presiona en <strong>reproducir</strong>, de lo contrario presiona en el botón de <strong>ignorar</strong>.";
-  var popup_styles = {
-    "background": "rgba(0, 0, 0, 0.7)",
-    "bottom": "0",
-    "left": "0",
-    "margin": "0",
-    "padding": "0",
-    "opacity": "1",
-    "position": "fixed",
-    "right": "0",
-    "transition": "opacity 0.5s linear",
-    "top": "0",
-    "visibility": "visible",
-    "zIndex": "10000"
-  };
-  var popup_styles_fade_out = {
-    "opacity": "0",
-    "transition": "visibility 0s 0.5s, opacity 0.5s linear",
-    "visibility": "hidden"
-  };
-  var popup_window_styles = {
-    "background": "rgb(245, 245, 245)",
-    "border": "1px solid rgb(5, 104, 123)",
-    "borderRadius": "5px",
-    "boxSizing": "border-box",
-    "color": "rgb(0, 0, 0)",
-    "fontFamily": "Arial, sans-serif",
-    "fontSize": "14px",
-    "height": "150px",
-    "left": "50%",
-    "lineHeight": "1.4",
-    "margin-left": "-200px",
-    "margin-top": "-75px",
-    "padding": "15px",
-    "position": "absolute",
-    "textAlign": "center",
-    "top": "50%",
-    "width": "400px",
-    "z-index": "1"
-  };
-  dom_video.id = "zxcvBNMasdf-video-test";
-  dom_video.muted = true;
-  dom_video.playsInline = true;
-  dom_video.style.display = "none";
-  dom_video.src = "https://www.w3schools.com/html/mov_bbb.mp4"; // Video in own server needed
-
-  dom_popup.id = "zxcvBNMasdf-video-test-popup";
-  dom_popup_window.innerHTML = "\n        <p style=\"margin: 0; padding: 0;\">".concat(popup_text, "</p>\n        <div style=\"clear: both; margin-top: 30px;\">\n            <button id=\"zxcvBNMasdf-video-test-btn-left\" style=\"float: left; border-radius: 0; font-weight: 700; border: 1px solid rgba(34, 34, 34, 0.2); color: rgb(68, 68, 68); cursor: pointer; width: 49%; background-color: rgb(238, 238, 238); padding: 5px 0;\">Ignorar</button>\n            <button id=\"zxcvBNMasdf-video-test-btn-right\" style=\"float: right; border-radius: 0; font-weight: 700; border: 1px solid rgba(5, 104, 123, 0.3); color: rgb(255, 255, 255); cursor: pointer; width: 49%; background-color: rgb(5, 104, 123); padding: 5px 0;\">Reproducir</button>\n        </div>        \n    ");
-  dom_popup.appendChild(dom_popup_window);
-  var set_mass_style = function set_mass_style(element, props) {
-    for (var _prop in props) {
-      element.style[_prop] = props[_prop];
-    }
-  };
-  var event_popup_close = function event_popup_close() {
-    return set_mass_style(dom_wrapper.querySelector("#zxcvBNMasdf-video-test-popup"), popup_styles_fade_out);
-  };
-  if (!!dom_wrapper) {
-    set_mass_style(dom_popup, popup_styles);
-    set_mass_style(dom_popup_window, popup_window_styles);
-    dom_wrapper.appendChild(dom_video);
-    dom_wrapper.appendChild(dom_popup);
-    dom_wrapper.querySelector("#zxcvBNMasdf-video-test-btn-left").addEventListener("click", function () {
-      return event_popup_close();
-    });
-    dom_wrapper.querySelector("#zxcvBNMasdf-video-test-btn-right").addEventListener("click", function () {
-      event_popup_close();
-      if (!!top.ampTV && !!top.ampTV.videojs && !!top.ampTV.videojs.players) {
-        top.ampTV.videojs.players[Object.keys(top.ampTV.videojs.players)[0]].play();
-      }
-    });
-  }
-  var video_promise = dom_wrapper.querySelector("#zxcvBNMasdf-video-test").play();
-  if (typeof video_promise !== "undefined") {
-    video_promise.then(function (res) {})["catch"](function (error) {
-      //if (error.includes("NotAllowedError")) {
-      (0, _log.cLog)("[event:dispatch_check_low_power] low_power_or_error_with_video");
-      //}                     
-    });
-  }
-};
-
 function addPhase2Script(configID, shadowRoot, src) {
   var sr = document.createElement('script');
   sr.async = 'async';
@@ -13759,6 +13920,7 @@ function addPhase2Script(configID, shadowRoot, src) {
 }
 
 var ampPhase1 = function ampPhase1(configID) {
+  var lowPower = new _mobile.LowPower();
   try {
     top.ampTV = top.ampTV || {};
     if (typeof top.ampTV.installPlayList === 'undefined') {
@@ -14363,6 +14525,7 @@ var ampPhase1 = function ampPhase1(configID) {
           var resolving = vidCoObj.resolveMissing(options.size, function (x) {
             //console.log("AFTER ADDITEM", JSON.parse(JSON.stringify(x), JSON.parse(JSON.stringify(vidCoObj.playList))));
             executePhase2();
+            lowPower.dispatch_check_low_power();
           }, function () {
             return setTimeout(function () {
               return checkValues(1);
@@ -14416,10 +14579,6 @@ if (goAheadPhase1) {
     phase1Exec = true;
   } catch (e) {}
   if (configID && !phase1Exec) ampPhase1(configID);
-  var isMobile = _construct(_isMobile.IsMobile, _toConsumableArray((0, _viewport.getTopViewPortSize)()));
-  if (isMobile.isIOS() || isMobile.isAndroid()) {
-    dispatch_check_low_power();
-  }
 }
 
 /* ORIGINAL
@@ -14440,7 +14599,7 @@ if (goAheadPhase1) {
 
  */
 
-},{"./AMPLIFFYPLAYER_INTEXT_IMA_05.JS":45,"./analytics/comScore2VideoJS":46,"./browser/absolutePosition":47,"./browser/shadowDOM":52,"./container/playerSize":56,"./dom/isMobile":59,"./dom/viewport":60,"./gamestry":61,"./log/log":62,"./phase-2":66,"./player/domainWhitelist":69,"./publisher":76,"./vidAd/amazonHeaderBidder":80,"./vidAd/openWrap":81,"./vidAd/queue":82,"./vidCo/vidCo":88}],66:[function(require,module,exports){
+},{"./AMPLIFFYPLAYER_INTEXT_IMA_05.JS":45,"./analytics/comScore2VideoJS":46,"./browser/absolutePosition":47,"./browser/shadowDOM":52,"./container/playerSize":56,"./dom/isMobile":59,"./dom/viewport":60,"./gamestry":61,"./log/log":62,"./mobile":63,"./phase-2":68,"./player/domainWhitelist":71,"./publisher":78,"./vidAd/amazonHeaderBidder":82,"./vidAd/openWrap":83,"./vidAd/queue":84,"./vidCo/vidCo":90}],68:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -14799,7 +14958,7 @@ function phase2Install() {
   top.ampTV.ampPhase2Setup = phase2Setup;
 }
 
-},{"./container/fluid":55,"./log/log":62,"./observer/visible":64,"./player/adsManager":67,"./player/playListEnded":71,"./player/playStateObserver":73,"./player/trackAdRequestDone":74,"./player/vidAdCoSizes":75,"./timer/timePlaying":78,"./vidAd/timeOutFirstAd":83,"./vidCo/playlist15":84,"./vidCo/playlistHidden":85,"./vidCo/title":86,"./viewability/viewability":90,"./viewability/viewabilityState":91}],67:[function(require,module,exports){
+},{"./container/fluid":55,"./log/log":62,"./observer/visible":66,"./player/adsManager":69,"./player/playListEnded":73,"./player/playStateObserver":75,"./player/trackAdRequestDone":76,"./player/vidAdCoSizes":77,"./timer/timePlaying":80,"./vidAd/timeOutFirstAd":85,"./vidCo/playlist15":86,"./vidCo/playlistHidden":87,"./vidCo/title":88,"./viewability/viewability":92,"./viewability/viewabilityState":93}],69:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15037,7 +15196,7 @@ var AdsManager = /*#__PURE__*/function () {
 }();
 exports.AdsManager = AdsManager;
 
-},{"../log/log":62,"./bringGoogleIMAObjectsToThisWindow":68}],68:[function(require,module,exports){
+},{"../log/log":62,"./bringGoogleIMAObjectsToThisWindow":70}],70:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15061,7 +15220,7 @@ function bringGoogleIMAObjectsToThisWindow() {
   }
 }
 
-},{"../log/log":62}],69:[function(require,module,exports){
+},{"../log/log":62}],71:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15102,7 +15261,7 @@ function expandDomains(whitelist) {
   return expandedWhitelist;
 }
 
-},{}],70:[function(require,module,exports){
+},{}],72:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15122,7 +15281,7 @@ function isPlayingAnAd(player) {
   return player.ads.isInAdMode() && player.ads.isAdPlaying() && !player.ads.isWaitingForAdBreak();
 }
 
-},{}],71:[function(require,module,exports){
+},{}],73:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15194,7 +15353,7 @@ function install(player, playerState) {
   player.on(['ended', 'error'], checkEnded);
 }
 
-},{"../log/log":62}],72:[function(require,module,exports){
+},{"../log/log":62}],74:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15359,7 +15518,7 @@ var playState = /*#__PURE__*/function () {
 }();
 exports.playState = playState;
 
-},{}],73:[function(require,module,exports){
+},{}],75:[function(require,module,exports){
 "use strict";
 
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
@@ -15488,7 +15647,7 @@ var playStateObserver = /*#__PURE__*/function (_playState) {
 }(_playState2.playState);
 exports.playStateObserver = playStateObserver;
 
-},{"../log/log":62,"./playState":72}],74:[function(require,module,exports){
+},{"../log/log":62,"./playState":74}],76:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15579,7 +15738,7 @@ var TrackAdRequestDone = /*#__PURE__*/function () {
 }();
 exports.TrackAdRequestDone = TrackAdRequestDone;
 
-},{"../log/log":62,"./bringGoogleIMAObjectsToThisWindow":68}],75:[function(require,module,exports){
+},{"../log/log":62,"./bringGoogleIMAObjectsToThisWindow":70}],77:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15620,7 +15779,7 @@ function checkVidAdCoSizes(getActualContainerSize, getActualVidAdCoSize) {
   actualVidAdCoSize[1] = finalSize[1];
 }
 
-},{}],76:[function(require,module,exports){
+},{}],78:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15763,7 +15922,7 @@ function fillPlayList(vidAf) {
 }
 /* End Amp Affiliate */
 
-},{"./log/log":62,"./player/adsManager":67,"./player/playStateObserver":73}],77:[function(require,module,exports){
+},{"./log/log":62,"./player/adsManager":69,"./player/playStateObserver":75}],79:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15802,7 +15961,7 @@ exports.DocumentVisibility = DocumentVisibility;
 _defineProperty(DocumentVisibility, "startVisibilityObservers", []);
 _defineProperty(DocumentVisibility, "stopVisibilityObservers", []);
 
-},{}],78:[function(require,module,exports){
+},{}],80:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15865,7 +16024,7 @@ var TimePlaying = /*#__PURE__*/function () {
 }();
 exports.TimePlaying = TimePlaying;
 
-},{}],79:[function(require,module,exports){
+},{}],81:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16002,7 +16161,7 @@ var Timer = /*#__PURE__*/function () {
 }();
 exports.Timer = Timer;
 
-},{}],80:[function(require,module,exports){
+},{}],82:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16211,7 +16370,7 @@ var AmazonHeaderBidder = /*#__PURE__*/function () {
 }();
 exports.AmazonHeaderBidder = AmazonHeaderBidder;
 
-},{"../browser/queryString":51}],81:[function(require,module,exports){
+},{"../browser/queryString":51}],83:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16449,7 +16608,7 @@ var OpenWrap = /*#__PURE__*/function () {
 }();
 exports.OpenWrap = OpenWrap;
 
-},{"../browser/queryString":51,"../log/log":62}],82:[function(require,module,exports){
+},{"../browser/queryString":51,"../log/log":62}],84:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16507,7 +16666,7 @@ var VidAdQueue = /*#__PURE__*/function () {
 }();
 exports.VidAdQueue = VidAdQueue;
 
-},{"../consent/consent":54,"../vidCo/vast":87}],83:[function(require,module,exports){
+},{"../consent/consent":54,"../vidCo/vast":89}],85:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16536,7 +16695,7 @@ function installFirstAdTimeout(timeout, adManager, playerState) {
   adManager.observe("startedVidAd", clearTimeout);
 }
 
-},{"../log/log":62}],84:[function(require,module,exports){
+},{"../log/log":62}],86:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16563,7 +16722,7 @@ function getFirst15(playList) {
   return res;
 }
 
-},{}],85:[function(require,module,exports){
+},{}],87:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16583,7 +16742,7 @@ function show() {
   style = undefined;
 }
 
-},{"../dom/addStyles":57}],86:[function(require,module,exports){
+},{"../dom/addStyles":57}],88:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16663,7 +16822,7 @@ function title(root, parent, player) {
   });
 }
 
-},{"../dom/addStyles":57,"../log/log":62}],87:[function(require,module,exports){
+},{"../dom/addStyles":57,"../log/log":62}],89:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16762,7 +16921,7 @@ function adTagUrlReplacements(adTagUrl, actualSize, newCacheBuster, options) {
   return adTagUrl;
 }
 
-},{"../browser/queryString":51,"../log/log":62}],88:[function(require,module,exports){
+},{"../browser/queryString":51,"../log/log":62}],90:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17269,7 +17428,7 @@ var vidCo = /*#__PURE__*/function () {
 }();
 exports.vidCo = vidCo;
 
-},{"../browser/cookies.js":48,"../browser/queryString":51,"../browser/version":53,"../dom/htmlEntities":58,"../dom/isMobile":59,"../dom/viewport":60,"../log/log":62,"vast-client":40}],89:[function(require,module,exports){
+},{"../browser/cookies.js":48,"../browser/queryString":51,"../browser/version":53,"../dom/htmlEntities":58,"../dom/isMobile":59,"../dom/viewport":60,"../log/log":62,"vast-client":40}],91:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17436,7 +17595,7 @@ var vidCoVidAdViewabilityController = /*#__PURE__*/function () {
 }();
 exports.vidCoVidAdViewabilityController = vidCoVidAdViewabilityController;
 
-},{"../log/log":62,"../timer/timer":79}],90:[function(require,module,exports){
+},{"../log/log":62,"../timer/timer":81}],92:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17632,7 +17791,7 @@ var Viewability = /*#__PURE__*/function () {
 }();
 exports.Viewability = Viewability;
 
-},{"../log/log":62,"../observer/intersection":63,"../player/paused":70,"../timer/documentVisibility":77,"../timer/timer":79,"./vidCoVidAdViewabilityController":89}],91:[function(require,module,exports){
+},{"../log/log":62,"../observer/intersection":65,"../player/paused":72,"../timer/documentVisibility":79,"../timer/timer":81,"./vidCoVidAdViewabilityController":91}],93:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17678,4 +17837,4 @@ var viewabilityState = /*#__PURE__*/function () {
 }();
 exports.viewabilityState = viewabilityState;
 
-},{"../observer/visible":64}]},{},[65]);
+},{"../observer/visible":66}]},{},[67]);
