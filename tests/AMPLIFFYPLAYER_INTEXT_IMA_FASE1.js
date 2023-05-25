@@ -13525,14 +13525,17 @@ function _classPrivateFieldInitSpec(obj, privateMap, value) { _checkPrivateRedec
 function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
 function _classPrivateFieldGet(receiver, privateMap) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
 function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
-function _classPrivateMethodGet(receiver, privateSet, fn) { if (!privateSet.has(receiver)) { throw new TypeError("attempted to get private field on non-instance"); } return fn; }
 function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "set"); _classApplyDescriptorSet(receiver, descriptor, value); return value; }
 function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!privateMap.has(receiver)) { throw new TypeError("attempted to " + action + " private field on non-instance"); } return privateMap.get(receiver); }
 function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } }
+function _classPrivateMethodGet(receiver, privateSet, fn) { if (!privateSet.has(receiver)) { throw new TypeError("attempted to get private field on non-instance"); } return fn; }
 var _dom_wrapper = /*#__PURE__*/new WeakMap();
 var _dom_wrapper_shadow = /*#__PURE__*/new WeakMap();
 var _data_video = /*#__PURE__*/new WeakMap();
+var _current_lang = /*#__PURE__*/new WeakMap();
 var _set_mass_style = /*#__PURE__*/new WeakSet();
+var _get_text_to_translate = /*#__PURE__*/new WeakSet();
+var _check_lang = /*#__PURE__*/new WeakSet();
 var _event_popup_close = /*#__PURE__*/new WeakSet();
 var _event_popup_open = /*#__PURE__*/new WeakSet();
 var _add_dom_events = /*#__PURE__*/new WeakSet();
@@ -13554,6 +13557,8 @@ var LowPower = /*#__PURE__*/function () {
     _classPrivateMethodInitSpec(this, _add_dom_events);
     _classPrivateMethodInitSpec(this, _event_popup_open);
     _classPrivateMethodInitSpec(this, _event_popup_close);
+    _classPrivateMethodInitSpec(this, _check_lang);
+    _classPrivateMethodInitSpec(this, _get_text_to_translate);
     _classPrivateMethodInitSpec(this, _set_mass_style);
     _classPrivateFieldInitSpec(this, _dom_wrapper, {
       writable: true,
@@ -13567,6 +13572,11 @@ var LowPower = /*#__PURE__*/function () {
       writable: true,
       value: void 0
     });
+    _classPrivateFieldInitSpec(this, _current_lang, {
+      writable: true,
+      value: void 0
+    });
+    _classPrivateMethodGet(this, _check_lang, _check_lang2).call(this);
     _classPrivateFieldSet(this, _dom_wrapper, parent.document.querySelector("body"));
     _classPrivateFieldSet(this, _dom_wrapper_shadow, null);
     _classPrivateFieldSet(this, _data_video, "data:video/mp4;base64,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");
@@ -13592,6 +13602,28 @@ exports["default"] = LowPower;
 function _set_mass_style2(element, props) {
   for (var _prop in props) {
     element.style[_prop] = props[_prop];
+  }
+}
+function _get_text_to_translate2(word) {
+  var res = {
+    "en": {
+      "Ignore": "Ignore",
+      "Play": "Play",
+      "Your device has power saving mode active, to play the video press <strong>play</strong>, otherwise press the <strong>ignore</strong> button.": "Your device has power saving mode active, to play the video press <strong>play</strong>, otherwise press the <strong>ignore</strong> button."
+    },
+    "es": {
+      "Ignore": "Ignorar",
+      "Play": "Reproducir",
+      "Your device has power saving mode active, to play the video press <strong>play</strong>, otherwise press the <strong>ignore</strong> button.": "Tu dispositivo tiene el modo de ahorro de energía activo, para reproducir el video presiona en <strong>reproducir</strong>, de lo contrario presiona en el botón de <strong>ignorar</strong>."
+    }
+  };
+  return res[_classPrivateFieldGet(this, _current_lang)][word];
+}
+function _check_lang2() {
+  if (typeof window.navigator.language !== "undefined") {
+    _classPrivateFieldSet(this, _current_lang, window.navigator.language.split("-")[0].toLowerCase());
+  } else {
+    _classPrivateFieldSet(this, _current_lang, "en");
   }
 }
 function _event_popup_close2() {
@@ -13673,7 +13705,7 @@ function _execute2() {
   var dom_video = document.createElement("video");
   var dom_popup = document.createElement("div");
   var dom_popup_window = document.createElement("div");
-  var popup_text = "Tu dispositivo tiene el modo de ahorro de energía activo, para reproducir el video presiona en <strong>reproducir</strong>, de lo contrario presiona en el botón de <strong>ignorar</strong>.";
+  var popup_text = _classPrivateMethodGet(this, _get_text_to_translate, _get_text_to_translate2).call(this, "Your device has power saving mode active, to play the video press <strong>play</strong>, otherwise press the <strong>ignore</strong> button.");
   var popup_styles = {
     "background": "rgba(0, 0, 0, 0.7)",
     "bottom": "0",
@@ -13715,7 +13747,7 @@ function _execute2() {
   dom_video.style.display = "none";
   dom_video.src = _classPrivateFieldGet(this, _data_video);
   dom_popup.id = "zxcvBNMasdf-video-test-popup";
-  dom_popup_window.innerHTML = "\n            <p style=\"margin: 0; padding: 0;\">".concat(popup_text, "</p>\n            <div style=\"clear: both; margin-top: 30px;\">\n                <button id=\"zxcvBNMasdf-video-test-btn-left\" style=\"float: left; border-radius: 0; font-weight: 700; border: 1px solid rgba(34, 34, 34, 0.2); color: rgb(68, 68, 68); cursor: pointer; width: 49%; background-color: rgb(238, 238, 238); padding: 5px 0;\">Ignorar</button>\n                <button id=\"zxcvBNMasdf-video-test-btn-right\" style=\"float: right; border-radius: 0; font-weight: 700; border: 1px solid rgba(5, 104, 123, 0.3); color: rgb(255, 255, 255); cursor: pointer; width: 49%; background-color: rgb(5, 104, 123); padding: 5px 0;\">Reproducir</button>\n            </div>        \n        ");
+  dom_popup_window.innerHTML = "\n            <p style=\"margin: 0; padding: 0;\">".concat(popup_text, "</p>\n            <div style=\"clear: both; margin-top: ").concat(_classPrivateFieldGet(this, _current_lang) === "en" ? "50" : "30", "px;\">\n                <button id=\"zxcvBNMasdf-video-test-btn-left\" style=\"float: left; border-radius: 0; font-weight: 700; border: 1px solid rgba(34, 34, 34, 0.2); color: rgb(68, 68, 68); cursor: pointer; width: 49%; background-color: rgb(238, 238, 238); padding: 5px 0;\">").concat(_classPrivateMethodGet(this, _get_text_to_translate, _get_text_to_translate2).call(this, "Ignore"), "</button>\n                <button id=\"zxcvBNMasdf-video-test-btn-right\" style=\"float: right; border-radius: 0; font-weight: 700; border: 1px solid rgba(5, 104, 123, 0.3); color: rgb(255, 255, 255); cursor: pointer; width: 49%; background-color: rgb(5, 104, 123); padding: 5px 0;\">").concat(_classPrivateMethodGet(this, _get_text_to_translate, _get_text_to_translate2).call(this, "Play"), "</button>\n            </div>        \n        ");
   dom_popup.appendChild(dom_popup_window);
   if (!!_classPrivateFieldGet(this, _dom_wrapper)) {
     _classPrivateMethodGet(this, _set_mass_style, _set_mass_style2).call(this, dom_popup, popup_styles);
