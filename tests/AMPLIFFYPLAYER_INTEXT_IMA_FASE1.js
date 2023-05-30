@@ -14734,7 +14734,7 @@ var AdsManager = /*#__PURE__*/function () {
     this.wantingToPlayAnAd = false;
     this.wantingToPlayFirstPreroll = false;
     this.playingAnAd = false;
-    this.vidAdNumberOfRetries = this.playerStorage.options.vidAdNumberOfRetries || 5;
+    this.vidAdNumberOfRetries = this.playerStorage.options.vidAdNumberOfRetries || 0;
     this.vidAdDelayBetweenRetries = this.playerStorage.options.vidAdDelayBetweenRetries || 1000;
     this.currentNumRetry = 0;
     this.tOutRetry = undefined;
@@ -14837,9 +14837,7 @@ var AdsManager = /*#__PURE__*/function () {
       if (!!this.vidAdNumberOfRetries) {
         if (this.wantingToPlayAnAd && this._adManagerPrepared) {
           if (this.currentNumRetry < this.vidAdNumberOfRetries) {
-            console.error("level 1");
             this.tOutRetry = setTimeout(function () {
-              console.error("level 2");
               _this3.wantingToPlayAnAd = true;
               _this3.requestAnAd();
               _this3.showRequestedAd();
