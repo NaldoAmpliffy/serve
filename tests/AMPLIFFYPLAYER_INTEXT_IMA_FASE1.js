@@ -13645,6 +13645,7 @@ function addPhase2Script(configID, shadowRoot, src) {
 }
 
 var ampPhase1 = function ampPhase1(configID) {
+  var _defaultOptions;
   try {
     top.ampTV = top.ampTV || {};
     if (typeof top.ampTV.installPlayList === 'undefined') {
@@ -13953,7 +13954,7 @@ var ampPhase1 = function ampPhase1(configID) {
     if (!options.avaSize) optionsMerged.avaSize = defaultOptions.avaSize;
     return optionsMerged;
   }
-  var defaultOptions = {
+  var defaultOptions = (_defaultOptions = {
     styles: '',
     size: [],
     fluid: false,
@@ -13983,51 +13984,19 @@ var ampPhase1 = function ampPhase1(configID) {
       firstVidAdMilliseconds: 2000,
       minMillisecondsBetweenVidAds: 60000
     },
+    vidAdNumberOfRetries: 5,
+    vidAdDelayBetweenRetries: 5000,
     vastURL: '',
-    vidAdSpecial: '',
-    vidAdNumberOfRetries: undefined,
-    vidAdDelayBetweenRetries: undefined,
-    vidAdTryToResumeVidCo: true,
-    vidAdOnFirstPreroll: true,
-    openwrapAccountId: 0,
-    openwrapProfileId: 0,
-    openwrapDelayVidAdUntilOwResponse: false,
-    openwrapMinCachedBids: 0,
-    amazonHeaderBidderAccountId: '',
-    amazonHeaderBidderSlotIDs: '',
-    adBreakOnlyPrerolls: true,
-    ava: false,
-    avaOnlyOnVidAd: false,
-    avaSize: {
-      desktop: {
-        width: 534,
-        height: 300
-      },
-      mobile: {
-        percentage: 21
-      }
+    vidAdSpecial: ''
+  }, _defineProperty(_defaultOptions, "vidAdNumberOfRetries", undefined), _defineProperty(_defaultOptions, "vidAdDelayBetweenRetries", undefined), _defineProperty(_defaultOptions, "vidAdTryToResumeVidCo", true), _defineProperty(_defaultOptions, "vidAdOnFirstPreroll", true), _defineProperty(_defaultOptions, "openwrapAccountId", 0), _defineProperty(_defaultOptions, "openwrapProfileId", 0), _defineProperty(_defaultOptions, "openwrapDelayVidAdUntilOwResponse", false), _defineProperty(_defaultOptions, "openwrapMinCachedBids", 0), _defineProperty(_defaultOptions, "amazonHeaderBidderAccountId", ''), _defineProperty(_defaultOptions, "amazonHeaderBidderSlotIDs", ''), _defineProperty(_defaultOptions, "adBreakOnlyPrerolls", true), _defineProperty(_defaultOptions, "ava", false), _defineProperty(_defaultOptions, "avaOnlyOnVidAd", false), _defineProperty(_defaultOptions, "avaSize", {
+    desktop: {
+      width: 534,
+      height: 300
     },
-    avaForceStartOnLoad: false,
-    avaForceFloatedOnVidad: false,
-    avaCloseDelayOnVidAd: -1,
-    avaCloseSize: undefined,
-    vidCoImpressions: true,
-    vidCoAllowRepeatSameVideo: false,
-    closeVidCo: false,
-    closeVidCoSize: 20,
-    closeVidCoDelayedMS: false,
-    closeVidCoOnEnd: false,
-    closeVidCoOnAdEnd: false,
-    closeVidCoIfNoAd: false,
-    closeVidCoIfNoAdTimeoutMS: 0,
-    observers: {},
-    enforceWhitelist: false,
-    whitelistedDomains: [],
-    comScoreID: 0,
-    context: {},
-    dev: false,
-    logLevel: 3
-  };
+    mobile: {
+      percentage: 21
+    }
+  }), _defineProperty(_defaultOptions, "avaForceStartOnLoad", false), _defineProperty(_defaultOptions, "avaForceFloatedOnVidad", false), _defineProperty(_defaultOptions, "avaCloseDelayOnVidAd", -1), _defineProperty(_defaultOptions, "avaCloseSize", undefined), _defineProperty(_defaultOptions, "vidCoImpressions", true), _defineProperty(_defaultOptions, "vidCoAllowRepeatSameVideo", false), _defineProperty(_defaultOptions, "closeVidCo", false), _defineProperty(_defaultOptions, "closeVidCoSize", 20), _defineProperty(_defaultOptions, "closeVidCoDelayedMS", false), _defineProperty(_defaultOptions, "closeVidCoOnEnd", false), _defineProperty(_defaultOptions, "closeVidCoOnAdEnd", false), _defineProperty(_defaultOptions, "closeVidCoIfNoAd", false), _defineProperty(_defaultOptions, "closeVidCoIfNoAdTimeoutMS", 0), _defineProperty(_defaultOptions, "observers", {}), _defineProperty(_defaultOptions, "enforceWhitelist", false), _defineProperty(_defaultOptions, "whitelistedDomains", []), _defineProperty(_defaultOptions, "comScoreID", 0), _defineProperty(_defaultOptions, "context", {}), _defineProperty(_defaultOptions, "dev", false), _defineProperty(_defaultOptions, "logLevel", 3), _defaultOptions);
   var location = window.location || document.location;
   var options = setupOptions(defaultOptions, (0, _publisher.checkAmpAffiliate)(false, location, configID, playerStorage));
 
@@ -14842,6 +14811,7 @@ var AdsManager = /*#__PURE__*/function () {
               _this3.requestAnAd();
               _this3.showRequestedAd();
               _this3.currentNumRetry = _this3.currentNumRetry + 1;
+              alert("retry");
             }, this.vidAdDelayBetweenRetries);
           }
         }
