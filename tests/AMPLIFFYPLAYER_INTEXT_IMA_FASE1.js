@@ -13758,8 +13758,32 @@ var ampPhase1 = function ampPhase1(configID) {
         div.style.maxWidth = frameElement.clientWidth + 'px';
         div.style.height = frameElement.clientHeight + 'px';
         div.style.maxHeight = frameElement.clientHeight + 'px';
+        playerStorage.applyStyles = function (playerStorage, div) {
+          try {
+            if (playerStorage.options.styles) {
+              // Parse the styles and get the values for the .vid-shadowRoot-amp class and apply them to the object div directly through the div.styles object
+              var styles = playerStorage.options.styles;
+              styles.match(/\.vid-shadowRoot-amp\s*\{([^}]*)\}/g).forEach(function (x) {
+                x.replace(/\.vid-shadowRoot-amp\s*\{([^}]*)\}/g, function (match, p1) {
+                  p1.split(';').forEach(function (y) {
+                    y.replace(/([^:]*):([^;]*)/, function (match, p1, p2) {
+                      // convert style to camelCase
+                      p1 = p1.replace(/-([a-z])/g, function (g) {
+                        return g[1].toUpperCase();
+                      });
+                      div.style[p1.trim()] = p2.trim();
+                    });
+                  });
+                });
+              });
+            }
+          } catch (e) {}
+        }.bind(top, playerStorage, div);
         if (!initializationDone && playerStorage.player && typeof playerStorage.player.ready === 'function' && div.style.opacity === '0.05') {
           initializationDone = true;
+          if (typeof playerStorage.applyStyles === 'function') {
+            playerStorage.applyStyles();
+          }
           playerStorage.player.ready(function () {
             if (playerStorage.options.fluid) {
               frameElement.style.width = '100%';
@@ -13983,10 +14007,11 @@ var ampPhase1 = function ampPhase1(configID) {
       firstVidAdMilliseconds: 2000,
       minMillisecondsBetweenVidAds: 60000
     },
-    vidAdNumberOfRetries: 5,
-    vidAdDelayBetweenRetries: 5000,
+    volume_percentage: 80.0,
     vastURL: '',
     vidAdSpecial: '',
+    vidAdNumberOfRetries: undefined,
+    vidAdDelayBetweenRetries: undefined,
     vidAdTryToResumeVidCo: true,
     vidAdOnFirstPreroll: true,
     openwrapAccountId: 0,
@@ -14195,6 +14220,7 @@ var ampPhase1 = function ampPhase1(configID) {
     var inserted = false;
     var insert = function insert(thumbnailURL, shortMP4URL) {
       var doPhase2 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+      options.muted = false;
       if (!inserted) {
         inserted = true;
         var d = document,
@@ -14203,6 +14229,7 @@ var ampPhase1 = function ampPhase1(configID) {
         v.setAttribute('playsinline', 'playsinline');
         if (options.autoPlay) v.setAttribute('autoplay', 'autoplay');
         if (options.muted) v.setAttribute('muted', 'muted');
+        v.volume = 0;
         v.setAttribute('poster', thumbnailURL);
         var videoWidth = options.fluid && initialVideoWidth && initialVideoHeight ? initialVideoWidth : options.size[0];
         var videoHeight = options.fluid && initialVideoWidth && initialVideoHeight ? initialVideoHeight : options.size[1];
@@ -14346,6 +14373,17 @@ var _visible = require("./observer/visible");
 var _viewabilityState = require("./viewability/viewabilityState");
 var _timeOutFirstAd = require("./vidAd/timeOutFirstAd");
 var _log = require("./log/log");
+var _isMobile = require("./dom/isMobile");
+var _viewport = require("./dom/viewport");
+function _construct(Parent, args, Class) { if (_isNativeReflectConstruct()) { _construct = Reflect.construct.bind(); } else { _construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) _setPrototypeOf(instance, Class.prototype); return instance; }; } return _construct.apply(null, arguments); }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 function addPhase3Script(configID, phase3src, rootDocument) {
   var sr = document.createElement('script');
   sr.id = 'phase3';
@@ -14429,7 +14467,14 @@ var ampPhase2 = function ampPhase2(configID) {
   //console.log("VideoJSOptions",videoJSOptions);
   if (configID.nodeName === 'IFRAME' && !window.useShadowRoot) top.ampTV.rootDocument = configID.contentDocument;else top.ampTV.rootDocument = playerStorage.rootDocument;
   //console.log("Creating Player with ID",playerId, configID);
-  playerStorage.player = videojs(playerId, videoJSOptions);
+  playerStorage.player = videojs(playerId, videoJSOptions, function () {
+    if (!!playerStorage.options.volume_percentage && playerStorage.options.volume_percentage >= 0) {
+      var isMobile = _construct(_isMobile.IsMobile, _toConsumableArray((0, _viewport.getTopViewPortSize)()));
+      if (!isMobile.isIOS()) {
+        this.volume(playerStorage.options.volume_percentage / 100);
+      }
+    }
+  });
   try {
     playerStorage.player.qualityLevels();
   } catch (e) {
@@ -14670,6 +14715,7 @@ function phase2Setup() {
     document.body.appendChild(d);
     if (frameElement && !window.useShadowRoot) top.ampTV.rootDocument = undefined;else top.ampTV.rootDocument = document;
     window.player = videojs(d.id, null, function (x) {
+      // alert(5)
       (0, _log.cLog)("Init ads", window.player.ads);
       if (typeof window.player.ads === 'function') window.player.ads();else if (!window.player.ads && top.ampTV.videojs.getPlugin('ads')) {
         top.ampTV.videojs.getPlugin('ads').call(window.player);
@@ -14683,7 +14729,7 @@ function phase2Install() {
   top.ampTV.ampPhase2Setup = phase2Setup;
 }
 
-},{"./container/fluid":55,"./log/log":62,"./observer/visible":64,"./player/adsManager":67,"./player/playListEnded":71,"./player/playStateObserver":73,"./player/trackAdRequestDone":74,"./player/vidAdCoSizes":75,"./timer/timePlaying":78,"./vidAd/timeOutFirstAd":83,"./vidCo/playlist15":84,"./vidCo/playlistHidden":85,"./vidCo/title":86,"./viewability/viewability":90,"./viewability/viewabilityState":91}],67:[function(require,module,exports){
+},{"./container/fluid":55,"./dom/isMobile":59,"./dom/viewport":60,"./log/log":62,"./observer/visible":64,"./player/adsManager":67,"./player/playListEnded":71,"./player/playStateObserver":73,"./player/trackAdRequestDone":74,"./player/vidAdCoSizes":75,"./timer/timePlaying":78,"./vidAd/timeOutFirstAd":83,"./vidCo/playlist15":84,"./vidCo/playlistHidden":85,"./vidCo/title":86,"./viewability/viewability":90,"./viewability/viewabilityState":91}],67:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -14734,10 +14780,11 @@ var AdsManager = /*#__PURE__*/function () {
     this.wantingToPlayAnAd = false;
     this.wantingToPlayFirstPreroll = false;
     this.playingAnAd = false;
-    this.vidAdNumberOfRetries = this.playerStorage.options.vidAdNumberOfRetries || 0;
-    this.vidAdDelayBetweenRetries = this.playerStorage.options.vidAdDelayBetweenRetries || 1000;
+    this.vidAdNumberOfRetries = typeof this.playerStorage.options.vidAdNumberOfRetries === 'number' ? this.playerStorage.options.vidAdNumberOfRetries : 0;
+    this.vidAdDelayBetweenRetries = typeof this.playerStorage.options.vidAdDelayBetweenRetries === 'number' ? this.playerStorage.options.vidAdDelayBetweenRetries : 1000;
     this.currentNumRetry = 0;
     this.tOutRetry = undefined;
+    this.ft_retry = false;
     this._userClosedVidAd = false;
     this.observers = observers;
     this.player.on('adserror', function (e) {
@@ -14764,6 +14811,7 @@ var AdsManager = /*#__PURE__*/function () {
     // Detect if IMA3 adManager is ready
     player.one('adsready', function () {
       _this.adManagerPrepared = true;
+      _this.ft_retry = true;
       (0, _log.cLog)("AdsManager Ready");
     });
     setInterval(this.checkBugFix, 1000);
@@ -14834,24 +14882,22 @@ var AdsManager = /*#__PURE__*/function () {
     value: function retryVidAd(e) {
       var _this3 = this;
       (0, _log.cLog)('retryVidAd', e);
-      if (!!this.vidAdNumberOfRetries) {
-        if (this.wantingToPlayAnAd && this._adManagerPrepared) {
-          if (this.currentNumRetry < this.vidAdNumberOfRetries) {
-            this.tOutRetry = setTimeout(function () {
-              _this3.wantingToPlayAnAd = true;
-              _this3.requestAnAd();
-              _this3.showRequestedAd();
-              _this3.currentNumRetry = _this3.currentNumRetry + 1;
-              alert("retry");
-            }, this.vidAdDelayBetweenRetries);
-          }
+      if (!!this.vidAdNumberOfRetries && this.adManagerPrepared && (this.ft_retry || this.wantingToPlayAnAd)) {
+        if (this.currentNumRetry < this.vidAdNumberOfRetries) {
+          (0, _log.cLog)('retryVidAd:mode_retry', e);
+          this.tOutRetry = setTimeout(function () {
+            _this3.wantingToPlayAnAd = true;
+            _this3.requestAnAd();
+            _this3.showRequestedAd();
+            _this3.currentNumRetry = _this3.currentNumRetry + 1;
+          }, this.vidAdDelayBetweenRetries);
         }
       }
     }
   }, {
     key: "clearRetryVidCo",
     value: function clearRetryVidCo(e) {
-      (0, _log.cLog)('retryVidAd', e);
+      (0, _log.cLog)('clearRetryVidCo', e);
       if (typeof this.tOutRetry !== "undefined") {
         this.currentNumRetry = 0;
         clearTimeout(this.tOutRetry);
@@ -14860,9 +14906,15 @@ var AdsManager = /*#__PURE__*/function () {
   }, {
     key: "errorVidAd",
     value: function errorVidAd(e) {
+      var _e$data, _e$data$AdError, _e$data$AdError$data;
       // adserror Event
       (0, _log.cLog)('noVidAd', e);
-      this.player.trigger("adretry");
+      if ((e === null || e === void 0 ? void 0 : (_e$data = e.data) === null || _e$data === void 0 ? void 0 : (_e$data$AdError = _e$data.AdError) === null || _e$data$AdError === void 0 ? void 0 : (_e$data$AdError$data = _e$data$AdError.data) === null || _e$data$AdError$data === void 0 ? void 0 : _e$data$AdError$data.errorCode) === 901) {
+        // VPAID mode 
+        (0, _log.cLog)('noVidAd:mode_vpaid', e);
+      } else {
+        this.player.trigger("adretry");
+      }
       this.adPrepared = false;
       (0, _bringGoogleIMAObjectsToThisWindow.bringGoogleIMAObjectsToThisWindow)();
       // HACK: On first Ad we may feed an empty VAST
@@ -15579,7 +15631,7 @@ function checkAmpAffiliate() {
   var result = {};
   try {
     var ampAffConfig = top.ampAffiliate.getConfig(window, configID),
-      configurables = [['autoPlay', 'player_autoplay'], ['autoPlay', 'player_hide_before_autoplay'], ['muted', 'start_muted'], ['muted', 'ytMuted'], ['limitRenditionByPlayerDimensions', 'limitRenditionByPlayerDimensions'], ['useBandwidthFromLocalStorage', 'useBandwidthFromLocalStorage'], ['poster', 'videothumb'], ['ytVideo', 'ytVideoId'], ['videoTitle', 'title'], ['vidCoTitleHidden', 'vidCoTitleHidden'], ['videoDescriptionURL', 'video_description_url'], ['videoDescription', 'video_description'], ['videoDescription', 'evt_label'], ['styles', 'jsStyles'], ['vastURL', 'adTagUrlOrig'], ['vidCoAdUnit', 'vidCoAdUnit'], ['proxy', 'proxy'], ['playList', 'playList'], ['vidAdNonLinearAdMaxWidth', 'vidAdNonLinearAdMaxWidth'], ['vidAdNonLinearAdMaxHeight', 'vidAdNonLinearAdMaxHeight'], ['vidAdTryToResumeVidCo', 'vidAdTryToResumeVidCo'], ['vidAdOnFirstPreroll', 'vidAdOnFirstPreroll'], ['vidAdNumberOfRetries', 'vidAdNumberOfRetries'], ['vidAdDelayBetweenRetries', 'vidAdDelayBetweenRetries'], ['openwrapAccountId', 'openwrapAccountId'], ['openwrapProfileId', 'openwrapProfileId'], ['openwrapDelayVidAdUntilOwResponse', 'openwrapDelayVidAdUntilOwResponse'], ['openwrapMinCachedBids', 'openwrapMinCachedBids'], ['amazonHeaderBidderAccountId', 'amazonHeaderBidderAccountId'], ['amazonHeaderBidderSlotIDs', 'amazonHeaderBidderSlotIDs'], ['playListKWs', 'playListKWs'], ['playListUserInterface', 'playListUserInterface'], ['playListPreloadNum', 'playListPreloadNum'], ['delayPhase2', 'delayPhase2'], ['allowPlayListOverride', 'allowPlayListOverride'], ['size', 'size'], ['fluid', 'fluid'], ['logLevel', 'logLevel'], ['viewability', 'viewability'], ['ava', 'ava'], ['avaOnlyOnVidAd', 'avaOnlyOnVidAd'], ['avaSize', 'avaSize'], ['avaForceStartOnLoad', 'avaForceStartOnLoad'], ['avaForceFloatedOnVidad', 'avaForceFloatedOnVidad'], ['avaCloseDelayOnVidAd', 'avaCloseDelayOnVidAd'], ['avaCloseSize', 'avaCloseSize'], ['avaAvoidCLS', 'avaAvoidCLS'], ['dev', 'dev'], ['vidCoImpressions', 'vidCoImpressions'], ['vidCoAllowRepeatSameVideo', 'vidCoAllowRepeatSameVideo'], ['closeVidCo', 'closeVidCo'], ['closeVidCoSize', 'closeVidCoSize'], ['closeVidCoDelayedMS', 'closeVidCoDelayedMS'], ['closeVidCoIfNoAd', 'closeVidCoIfNoAd'], ['closeVidCoIfNoAdTimeoutMS', 'closeVidCoIfNoAdTimeoutMS'], ['closeVidCoOnAdEnd', 'closeVidCoOnAdEnd'], ['closeVidCoOnEnd', 'closeVidCoOnEnd'], ['observers', 'observers'], ['enforceWhitelist', 'enforceWhitelist'], ['whitelistedDomains', 'whitelistedDomains'], ['comScoreID', 'comScoreID'], ['context', 'context'], ['userOptions', 'userOptions']];
+      configurables = [['autoPlay', 'player_autoplay'], ['autoPlay', 'player_hide_before_autoplay'], ['muted', 'start_muted'], ['muted', 'ytMuted'], ['limitRenditionByPlayerDimensions', 'limitRenditionByPlayerDimensions'], ['useBandwidthFromLocalStorage', 'useBandwidthFromLocalStorage'], ['poster', 'videothumb'], ['ytVideo', 'ytVideoId'], ['videoTitle', 'title'], ['vidCoTitleHidden', 'vidCoTitleHidden'], ['videoDescriptionURL', 'video_description_url'], ['videoDescription', 'video_description'], ['videoDescription', 'evt_label'], ['styles', 'jsStyles'], ['vastURL', 'adTagUrlOrig'], ['vidCoAdUnit', 'vidCoAdUnit'], ['proxy', 'proxy'], ['playList', 'playList'], ['vidAdNonLinearAdMaxWidth', 'vidAdNonLinearAdMaxWidth'], ['vidAdNonLinearAdMaxHeight', 'vidAdNonLinearAdMaxHeight'], ['vidAdTryToResumeVidCo', 'vidAdTryToResumeVidCo'], ['vidAdOnFirstPreroll', 'vidAdOnFirstPreroll'], ['volume_percentage', 'volume_percentage'], ['vidAdNumberOfRetries', 'vidAdNumberOfRetries'], ['vidAdDelayBetweenRetries', 'vidAdDelayBetweenRetries'], ['openwrapAccountId', 'openwrapAccountId'], ['openwrapProfileId', 'openwrapProfileId'], ['openwrapDelayVidAdUntilOwResponse', 'openwrapDelayVidAdUntilOwResponse'], ['openwrapMinCachedBids', 'openwrapMinCachedBids'], ['amazonHeaderBidderAccountId', 'amazonHeaderBidderAccountId'], ['amazonHeaderBidderSlotIDs', 'amazonHeaderBidderSlotIDs'], ['playListKWs', 'playListKWs'], ['playListUserInterface', 'playListUserInterface'], ['playListPreloadNum', 'playListPreloadNum'], ['delayPhase2', 'delayPhase2'], ['allowPlayListOverride', 'allowPlayListOverride'], ['size', 'size'], ['fluid', 'fluid'], ['logLevel', 'logLevel'], ['viewability', 'viewability'], ['ava', 'ava'], ['avaOnlyOnVidAd', 'avaOnlyOnVidAd'], ['avaSize', 'avaSize'], ['avaForceStartOnLoad', 'avaForceStartOnLoad'], ['avaForceFloatedOnVidad', 'avaForceFloatedOnVidad'], ['avaCloseDelayOnVidAd', 'avaCloseDelayOnVidAd'], ['avaCloseSize', 'avaCloseSize'], ['avaAvoidCLS', 'avaAvoidCLS'], ['dev', 'dev'], ['vidCoImpressions', 'vidCoImpressions'], ['vidCoAllowRepeatSameVideo', 'vidCoAllowRepeatSameVideo'], ['closeVidCo', 'closeVidCo'], ['closeVidCoSize', 'closeVidCoSize'], ['closeVidCoDelayedMS', 'closeVidCoDelayedMS'], ['closeVidCoIfNoAd', 'closeVidCoIfNoAd'], ['closeVidCoIfNoAdTimeoutMS', 'closeVidCoIfNoAdTimeoutMS'], ['closeVidCoOnAdEnd', 'closeVidCoOnAdEnd'], ['closeVidCoOnEnd', 'closeVidCoOnEnd'], ['observers', 'observers'], ['enforceWhitelist', 'enforceWhitelist'], ['whitelistedDomains', 'whitelistedDomains'], ['comScoreID', 'comScoreID'], ['context', 'context'], ['userOptions', 'userOptions']];
     console.log("Loaded! ampAffConfig", ampAffConfig);
     if (typeof ampAffConfig.vidAf !== 'undefined') {
       mergeOptions(ampAffConfig.vidAf, result);
@@ -16686,6 +16738,8 @@ function adTagUrlReplacements(adTagUrl, actualSize, newCacheBuster, options) {
   if (playListItem && typeof playListItem.name !== 'undefined' && playListItem.name.length) adTagUrl += (adTagUrl.indexOf('?') < 0 ? '?' : '&') + "vid_t=" + encodeURIComponent(playListItem.name);
   if (playListItem && typeof playListItem.duration === 'number' && playListItem.duration > 0) adTagUrl += (adTagUrl.indexOf('?') < 0 ? '?' : '&') + "vid_d=" + playListItem.duration;
   if (playListItem && typeof playListItem.description !== 'undefined' && playListItem.description.length) adTagUrl += (adTagUrl.indexOf('?') < 0 ? '?' : '&') + "vid_kw=" + encodeURIComponent(playListItem.description);
+
+  //adTagUrl = "https://ads-static.ampliffy.com/production/vpw/c/64661ca084ae3.xml"
   return adTagUrl;
 }
 
