@@ -109,6 +109,94 @@ function escapeHtml(unsafe) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.IsMobile = void 0;
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+var IsMobile = /*#__PURE__*/function () {
+  function IsMobile(viewPortWidth, viewPortHeight) {
+    _classCallCheck(this, IsMobile);
+    this.viewPortWidth = viewPortWidth;
+    this.viewPortHeight = viewPortHeight;
+  }
+  _createClass(IsMobile, [{
+    key: "isMobile",
+    value: function isMobile() {
+      return this.viewPortWidth < 460 || this.viewPortHeight < 460 || this.isIOS() || this.isAndroid();
+    }
+  }, {
+    key: "isIOS",
+    value: function isIOS() {
+      // iPad on iOS 13 detection (/Mac/.test(navigator.userAgent) && "ontouchend" in document)
+      return /iPad Simulator|iPhone Simulator|iPod Simulator|iPhone|iPad|iPod/i.test(navigator.platform) || /Mac/.test(navigator.userAgent) && "ontouchend" in document;
+    }
+  }, {
+    key: "isAndroid",
+    value: function isAndroid() {
+      return /Android/i.test(navigator.userAgent);
+    }
+  }, {
+    key: "isSafari",
+    value: function isSafari() {
+      return /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    }
+  }]);
+  return IsMobile;
+}();
+exports.IsMobile = IsMobile;
+
+},{}],7:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getTopViewPortSize = getTopViewPortSize;
+exports.getViewPortSize = getViewPortSize;
+function getViewPortSize() {
+  var viewPortSize = [0, 0];
+  try {
+    // $FlowFixMe
+    var validDocumentSize = document.documentElement && document.documentElement.clientHeight < 1.5 * window.innerHeight;
+    // $FlowFixMe
+    viewPortSize[0] = Math.max(validDocumentSize ? document.documentElement.clientWidth : 0, window.innerWidth || 0);
+    // $FlowFixMe
+    viewPortSize[1] = Math.max(validDocumentSize ? document.documentElement.clientHeight : 0, window.innerHeight || 0);
+  } catch (e) {
+    console.log("Unable to grab current viewport dimensions");
+  }
+  return viewPortSize;
+}
+function getTopViewPortSize() {
+  var viewPortSize = [0, 0];
+  try {
+    // $FlowFixMe
+    var validDocumentSize = document.documentElement && document.documentElement.clientHeight < 1.5 * window.innerHeight;
+    // $FlowFixMe
+    viewPortSize[0] = Math.max(validDocumentSize ? document.documentElement.clientWidth : 0, window.innerWidth || 0);
+    // $FlowFixMe
+    viewPortSize[1] = Math.max(validDocumentSize ? document.documentElement.clientHeight : 0, window.innerHeight || 0);
+  } catch (e) {
+    console.log("Unable to grab current viewport dimensions");
+  }
+  try {
+    // $FlowFixMe
+    var _validDocumentSize = top.document.documentElement && top.document.documentElement.clientHeight < 1.5 * top.innerHeight;
+    viewPortSize[0] = Math.max(_validDocumentSize ? top.document.documentElement.clientWidth : 0, top.innerWidth || 0);
+    viewPortSize[1] = Math.max(_validDocumentSize ? top.document.documentElement.clientHeight : 0, top.innerHeight || 0);
+  } catch (e) {}
+  return viewPortSize;
+}
+
+},{}],8:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.cLog = cLog;
 exports.imgLog = imgLog;
 exports.log = log;
@@ -143,7 +231,7 @@ function imgLog(url, done, fail) {
   img.src = url;
 }
 
-},{}],7:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -455,16 +543,28 @@ function calcTranslateYValue(value) {
   return base - value;
 }
 
-},{"./dom/htmlEntities":5,"./log/log":6}],8:[function(require,module,exports){
+},{"./dom/htmlEntities":5,"./log/log":8}],10:[function(require,module,exports){
 "use strict";
 
 var _sharer = require("./sharer");
 var _shadowDOM = require("./browser/shadowDOM");
 var _device = require("./browser/device");
 var _log = require("./log/log");
+var _isMobile = require("./dom/isMobile");
+var _viewport = require("./dom/viewport");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _construct(Parent, args, Class) { if (_isNativeReflectConstruct()) { _construct = Reflect.construct.bind(); } else { _construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) _setPrototypeOf(instance, Class.prototype); return instance; }; } return _construct.apply(null, arguments); }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+var isMobile = _construct(_isMobile.IsMobile, _toConsumableArray((0, _viewport.getTopViewPortSize)()));
 var scripts = document.querySelectorAll('script');
-var iOS = !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
+var iOS = isMobile.isIOS();
 var Android = !!navigator.userAgent && /Android/.test(navigator.userAgent);
 (0, _log.cLog)("SCRIPTS:", scripts);
 function getVidAdTagURL() {
@@ -1808,4 +1908,4 @@ if (typeof top.ampVideoBlogProcessed === 'undefined' || !top.ampVideoBlogProcess
   var genericAnchor = doc.querySelector('div.post-body') || doc.body;
 }
 
-},{"./browser/device":1,"./browser/shadowDOM":3,"./log/log":6,"./sharer":7}]},{},[8]);
+},{"./browser/device":1,"./browser/shadowDOM":3,"./dom/isMobile":6,"./dom/viewport":7,"./log/log":8,"./sharer":9}]},{},[10]);

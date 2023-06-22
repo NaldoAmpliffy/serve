@@ -12303,7 +12303,8 @@ var IsMobile = /*#__PURE__*/function () {
   }, {
     key: "isIOS",
     value: function isIOS() {
-      return /iPhone|iPad|iPod/i.test(navigator.userAgent);
+      // iPad on iOS 13 detection (/Mac/.test(navigator.userAgent) && "ontouchend" in document)
+      return /iPad Simulator|iPhone Simulator|iPod Simulator|iPhone|iPad|iPod/i.test(navigator.platform) || /Mac/.test(navigator.userAgent) && "ontouchend" in document;
     }
   }, {
     key: "isAndroid",
