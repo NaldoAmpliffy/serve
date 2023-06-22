@@ -12303,8 +12303,7 @@ var IsMobile = /*#__PURE__*/function () {
   }, {
     key: "isIOS",
     value: function isIOS() {
-      // iPad on iOS 13 detection (/Mac/.test(navigator.userAgent) && "ontouchend" in document)
-      return /iPad Simulator|iPhone Simulator|iPod Simulator|iPhone|iPad|iPod/i.test(navigator.platform) || /Mac/.test(navigator.userAgent) && "ontouchend" in document;
+      return /iPhone|iPad|iPod/i.test(navigator.userAgent);
     }
   }, {
     key: "isAndroid",
@@ -14158,8 +14157,6 @@ var ampPhase1 = function ampPhase1(configID) {
     }
     playerStorage.vidCoObj = vidCoObj;
 
-    // console.error(vidCoObj)
-
     //        const amazonHeaderBidderHostWhitelisted = window.location.host.match(/videos.memedeportes.com$/) || window.location.host.match(/\.vayagif\.com$/) || window.location.host.match(/\.ascodevida\.com$/);
     var amazonHeaderBidderActive = options.amazonHeaderBidderAccountId && options.amazonHeaderBidderAccountId.length > 5;
     var amazonHeaderPrefetchBids = amazonHeaderBidderActive ? 1 : options.openwrapMinCachedBids;
@@ -14713,9 +14710,11 @@ var ampPhase2 = function ampPhase2(configID) {
   });
 
   // Load Viewability Metrics: Pause VidCo if it's not visible on screen
-  if (start_in_autoplay) playerStorage.player.one('playing', function () {
-    return viewabilityControls.install(playerStorage.getElementToObserveViewability(), playerStorage.disposeCallback, playerStorage.player, playerStorage.options, playerStorage.playerState, playerStorage.options.viewability.vidCo, playerStorage.options.viewability.vidAd);
-  });else viewabilityControls.install(playerStorage.getElementToObserveViewability() || document.body, playerStorage.disposeCallback, playerStorage.player, playerStorage.options, playerStorage.playerState, playerStorage.options.viewability.vidCo, playerStorage.options.viewability.vidAd, playerStorage.options.viewability.firstVidAdMilliseconds, playerStorage.options.viewability.minMillisecondsBetweenVidAds);
+  if (start_in_autoplay) {
+    playerStorage.player.one('playing', function () {
+      return viewabilityControls.install(playerStorage.getElementToObserveViewability(), playerStorage.disposeCallback, playerStorage.player, playerStorage.options, playerStorage.playerState, playerStorage.options.viewability.vidCo, playerStorage.options.viewability.vidAd);
+    });
+  } else viewabilityControls.install(playerStorage.getElementToObserveViewability() || document.body, playerStorage.disposeCallback, playerStorage.player, playerStorage.options, playerStorage.playerState, playerStorage.options.viewability.vidCo, playerStorage.options.viewability.vidAd, playerStorage.options.viewability.firstVidAdMilliseconds, playerStorage.options.viewability.minMillisecondsBetweenVidAds);
 
   // Load the Phase III - Ads
   var phase3Exec;

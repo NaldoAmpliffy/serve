@@ -4871,8 +4871,7 @@ var IsMobile = /*#__PURE__*/function () {
   }, {
     key: "isIOS",
     value: function isIOS() {
-      // iPad on iOS 13 detection (/Mac/.test(navigator.userAgent) && "ontouchend" in document)
-      return /iPad Simulator|iPhone Simulator|iPod Simulator|iPhone|iPad|iPod/i.test(navigator.platform) || /Mac/.test(navigator.userAgent) && "ontouchend" in document;
+      return /iPhone|iPad|iPod/i.test(navigator.userAgent);
     }
   }, {
     key: "isAndroid",
