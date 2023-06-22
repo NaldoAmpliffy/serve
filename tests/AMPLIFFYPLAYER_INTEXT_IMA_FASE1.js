@@ -11802,7 +11802,7 @@ function checkState() {
   }
 }
 
-},{"../log/log":63}],47:[function(require,module,exports){
+},{"../log/log":62}],47:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12010,31 +12010,6 @@ function getChromeVersion() {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.check_autoplay_and_insert = check_autoplay_and_insert;
-var _log = require("../log/log");
-function check_autoplay_and_insert(v, exec_autoplay) {
-  var res = exec_autoplay(v);
-  var try_autoplay = v.play();
-  v.volume = 0;
-  if (typeof try_autoplay !== "undefined") {
-    try_autoplay.then(function () {
-      return res.success();
-    })["catch"](function (e) {
-      return res.fail(e);
-    })["finally"](function () {
-      return res["finally"]();
-    });
-  } else {
-    res.fallback();
-  }
-}
-
-},{"../log/log":63}],55:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
 exports.showNonPersonalizedAds = showNonPersonalizedAds;
 /* TODO: There is a task to be done later, to really grab the User Consent. This is a placeholder, which
          currently represents what Google Ads Manager (GPT) does right now
@@ -12043,7 +12018,7 @@ function showNonPersonalizedAds() {
   return false;
 }
 
-},{}],56:[function(require,module,exports){
+},{}],55:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12139,7 +12114,7 @@ var FluidObserver = /*#__PURE__*/function () {
 }();
 exports.FluidObserver = FluidObserver;
 
-},{"../browser/device":49}],57:[function(require,module,exports){
+},{"../browser/device":49}],56:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12237,7 +12212,7 @@ var SizeRegistry = /*#__PURE__*/function () {
 }();
 exports.SizeRegistry = SizeRegistry;
 
-},{}],58:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12259,7 +12234,7 @@ function addStyles(jsStyles, rootElement) {
   return style;
 }
 
-},{}],59:[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12276,7 +12251,7 @@ function escapeHtml(unsafe) {
   return unsafe.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
 }
 
-},{}],60:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12320,7 +12295,7 @@ var IsMobile = /*#__PURE__*/function () {
 }();
 exports.IsMobile = IsMobile;
 
-},{}],61:[function(require,module,exports){
+},{}],60:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12363,7 +12338,7 @@ function getTopViewPortSize() {
   return viewPortSize;
 }
 
-},{}],62:[function(require,module,exports){
+},{}],61:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13437,7 +13412,7 @@ var Gamestry = /*#__PURE__*/function () {
 }();
 exports.Gamestry = Gamestry;
 
-},{"./consent/consent":55,"./dom/isMobile":60,"./dom/viewport":61,"./log/log":63,"./vidCo/vast":88}],63:[function(require,module,exports){
+},{"./consent/consent":54,"./dom/isMobile":59,"./dom/viewport":60,"./log/log":62,"./vidCo/vast":87}],62:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13477,7 +13452,7 @@ function imgLog(url, done, fail) {
   img.src = url;
 }
 
-},{}],64:[function(require,module,exports){
+},{}],63:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13555,7 +13530,7 @@ var Intersection = /*#__PURE__*/function () {
 }();
 exports.Intersection = Intersection;
 
-},{}],65:[function(require,module,exports){
+},{}],64:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13603,7 +13578,7 @@ function getOffset(el) {
   };
 }
 
-},{"../log/log":63}],66:[function(require,module,exports){
+},{"../log/log":62}],65:[function(require,module,exports){
 "use strict";
 
 var _publisher = require("./publisher");
@@ -13621,7 +13596,6 @@ var _absolutePosition = require("./browser/absolutePosition");
 var _playerSize = require("./container/playerSize");
 var _domainWhitelist = require("./player/domainWhitelist");
 var _phase = require("./phase-2");
-var _autoplay = require("./capabilities/autoplay.js");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 function _construct(Parent, args, Class) { if (_isNativeReflectConstruct()) { _construct = Reflect.construct.bind(); } else { _construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) _setPrototypeOf(instance, Class.prototype); return instance; }; } return _construct.apply(null, arguments); }
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
@@ -14008,7 +13982,7 @@ var ampPhase1 = function ampPhase1(configID) {
     size: [],
     fluid: false,
     autoPlay: false,
-    muted: true,
+    muted: false,
     useBandwidthFromLocalStorage: false,
     limitRenditionByPlayerDimensions: true,
     poster: undefined,
@@ -14033,14 +14007,12 @@ var ampPhase1 = function ampPhase1(configID) {
       firstVidAdMilliseconds: 2000,
       minMillisecondsBetweenVidAds: 60000
     },
-    volume_percentage: undefined,
     vastURL: '',
     vidAdSpecial: '',
     vidAdNumberOfRetries: undefined,
     vidAdDelayBetweenRetries: undefined,
     vidAdTryToResumeVidCo: true,
     vidAdOnFirstPreroll: true,
-    vidAdMaxTime: 90,
     openwrapAccountId: 0,
     openwrapProfileId: 0,
     openwrapDelayVidAdUntilOwResponse: false,
@@ -14146,6 +14118,7 @@ var ampPhase1 = function ampPhase1(configID) {
       addPhase2Script(0, shadowRoot || document, top.ampTV.phase2 || window.phase2);
     }
   } else {
+    console.log('options', options);
     playerStorage.options = options;
     var vidCoObj = new _vidCo.vidCo(playerStorage.options, playerStorage);
     if (options.proxy) vidCoObj.proxy = options.proxy;else {
@@ -14246,32 +14219,6 @@ var ampPhase1 = function ampPhase1(configID) {
     var inserted = false;
     var insert = function insert(thumbnailURL, shortMP4URL) {
       var doPhase2 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
-      var can_execute_phase_2 = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : undefined;
-      var exec_autoplay = function exec_autoplay() {
-        var v = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-        var exec_phase_2 = function exec_phase_2() {
-          if (!!v) playerStorage.getVideoElementPlaceholder(playerStorage).appendChild(v);
-          if (doPhase2) executePhase2();
-          if (!!can_execute_phase_2) can_execute_phase_2();
-        };
-        return {
-          success: function success() {
-            (0, _log.cLog)("try_autoplay:success");
-          },
-          fail: function fail(e) {
-            v.setAttribute("muted", "muted");
-            (0, _log.cLog)("try_autoplay:fail", e);
-          },
-          "finally": function _finally() {
-            v.pause();
-            exec_phase_2();
-          },
-          fallback: function fallback() {
-            (0, _log.cLog)("try_autoplay:fallback");
-            exec_phase_2();
-          }
-        };
-      };
       if (!inserted) {
         inserted = true;
         var d = document,
@@ -14292,12 +14239,7 @@ var ampPhase1 = function ampPhase1(configID) {
         v.poster = thumbnailURL;
         v.innerHTML = '<source src="' + shortMP4URL + '" type="video/mp4">';
         //v.src = options.playList.items[0].sources.first15;
-
-        if (!options.muted && options.autoPlay) {
-          (0, _autoplay.check_autoplay_and_insert)(v, exec_autoplay);
-        } else {
-          exec_autoplay(v).fallback();
-        }
+        playerStorage.getVideoElementPlaceholder(playerStorage).appendChild(v);
         var lk = document.createElement('link');
         lk.rel = 'stylesheet';
         lk.href = css;
@@ -14310,9 +14252,8 @@ var ampPhase1 = function ampPhase1(configID) {
         var st = document.createElement('style');
         st.innerHTML = '@font-face {\n' + '    font-family: AMPVideoJS;\n' + '    src: url(data:application/font-woff;charset=utf-8;base64,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) format("woff");\n' + '    font-weight: 400;\n' + '    font-style: normal\n' + '}\n';
         top.document.head.appendChild(st);
-      } else {
-        exec_autoplay().fallback();
       }
+      if (doPhase2) executePhase2();
     };
 
     // Objective: Insert the video with a thumbnail and a short 15 seconds video
@@ -14327,7 +14268,8 @@ var ampPhase1 = function ampPhase1(configID) {
           shortMP4URL = x.sources.first15;
         }
       });
-      var can_execute_phase_2 = function can_execute_phase_2() {
+      if (thumbnailURL && shortMP4URL) {
+        insert(thumbnailURL, shortMP4URL, false);
         if (tryNum === 0) {
           // We try once to resolve it (tryNum=0). If there is an error, on the second try (tryNum=1), we will not retry and launch the Phase2.
           var resolving = vidCoObj.resolveMissing(options.size, function (x) {
@@ -14340,18 +14282,15 @@ var ampPhase1 = function ampPhase1(configID) {
           }, 1);
           if (!resolving) executePhase2();
         } else executePhase2();
-      };
-      if (thumbnailURL && shortMP4URL) {
-        insert(thumbnailURL, shortMP4URL, false, can_execute_phase_2);
       } else {
         if (options.playListKWs) {
-          var resolving = vidCoObj.resolveMissing(options.size, function (x) {
+          var _resolving = vidCoObj.resolveMissing(options.size, function (x) {
             //console.log("AFTER ADDITEM", JSON.parse(JSON.stringify(x), JSON.parse(JSON.stringify(vidCoObj.playList))));
             checkValues(1);
           }, function () {
             return setTimeout(checkValues, 1000);
           }, 1);
-          if (!resolving) vidCoObj.addNewItemBasedOnKeywords(options.vidCoAdUnit, options.size, options.playListKWs, function () {
+          if (!_resolving) vidCoObj.addNewItemBasedOnKeywords(options.vidCoAdUnit, options.size, options.playListKWs, function () {
             return checkValues(1);
           }, function () {
             return setTimeout(checkValues, 1000);
@@ -14409,7 +14348,7 @@ if (goAheadPhase1) {
 
  */
 
-},{"./AMPLIFFYPLAYER_INTEXT_IMA_05.JS":45,"./analytics/comScore2VideoJS":46,"./browser/absolutePosition":47,"./browser/shadowDOM":52,"./capabilities/autoplay.js":54,"./container/playerSize":57,"./dom/isMobile":60,"./dom/viewport":61,"./gamestry":62,"./log/log":63,"./phase-2":67,"./player/domainWhitelist":70,"./publisher":77,"./vidAd/amazonHeaderBidder":81,"./vidAd/openWrap":82,"./vidAd/queue":83,"./vidCo/vidCo":89}],67:[function(require,module,exports){
+},{"./AMPLIFFYPLAYER_INTEXT_IMA_05.JS":45,"./analytics/comScore2VideoJS":46,"./browser/absolutePosition":47,"./browser/shadowDOM":52,"./container/playerSize":56,"./dom/isMobile":59,"./dom/viewport":60,"./gamestry":61,"./log/log":62,"./phase-2":66,"./player/domainWhitelist":69,"./publisher":76,"./vidAd/amazonHeaderBidder":80,"./vidAd/openWrap":81,"./vidAd/queue":82,"./vidCo/vidCo":88}],66:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -14431,17 +14370,6 @@ var _visible = require("./observer/visible");
 var _viewabilityState = require("./viewability/viewabilityState");
 var _timeOutFirstAd = require("./vidAd/timeOutFirstAd");
 var _log = require("./log/log");
-var _isMobile = require("./dom/isMobile");
-var _viewport = require("./dom/viewport");
-function _construct(Parent, args, Class) { if (_isNativeReflectConstruct()) { _construct = Reflect.construct.bind(); } else { _construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) _setPrototypeOf(instance, Class.prototype); return instance; }; } return _construct.apply(null, arguments); }
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 function addPhase3Script(configID, phase3src, rootDocument) {
   var sr = document.createElement('script');
   sr.id = 'phase3';
@@ -14525,14 +14453,7 @@ var ampPhase2 = function ampPhase2(configID) {
   //console.log("VideoJSOptions",videoJSOptions);
   if (configID.nodeName === 'IFRAME' && !window.useShadowRoot) top.ampTV.rootDocument = configID.contentDocument;else top.ampTV.rootDocument = playerStorage.rootDocument;
   //console.log("Creating Player with ID",playerId, configID);
-  playerStorage.player = videojs(playerId, videoJSOptions, function () {
-    if (!!playerStorage.options.volume_percentage && playerStorage.options.volume_percentage >= 0) {
-      var isMobile = _construct(_isMobile.IsMobile, _toConsumableArray((0, _viewport.getTopViewPortSize)()));
-      if (!isMobile.isIOS()) {
-        this.volume(playerStorage.options.volume_percentage / 100);
-      }
-    }
-  });
+  playerStorage.player = videojs(playerId, videoJSOptions);
   try {
     playerStorage.player.qualityLevels();
   } catch (e) {
@@ -14710,11 +14631,9 @@ var ampPhase2 = function ampPhase2(configID) {
   });
 
   // Load Viewability Metrics: Pause VidCo if it's not visible on screen
-  if (start_in_autoplay) {
-    playerStorage.player.one('playing', function () {
-      return viewabilityControls.install(playerStorage.getElementToObserveViewability(), playerStorage.disposeCallback, playerStorage.player, playerStorage.options, playerStorage.playerState, playerStorage.options.viewability.vidCo, playerStorage.options.viewability.vidAd);
-    });
-  } else viewabilityControls.install(playerStorage.getElementToObserveViewability() || document.body, playerStorage.disposeCallback, playerStorage.player, playerStorage.options, playerStorage.playerState, playerStorage.options.viewability.vidCo, playerStorage.options.viewability.vidAd, playerStorage.options.viewability.firstVidAdMilliseconds, playerStorage.options.viewability.minMillisecondsBetweenVidAds);
+  if (start_in_autoplay) playerStorage.player.one('playing', function () {
+    return viewabilityControls.install(playerStorage.getElementToObserveViewability(), playerStorage.disposeCallback, playerStorage.player, playerStorage.options, playerStorage.playerState, playerStorage.options.viewability.vidCo, playerStorage.options.viewability.vidAd);
+  });else viewabilityControls.install(playerStorage.getElementToObserveViewability() || document.body, playerStorage.disposeCallback, playerStorage.player, playerStorage.options, playerStorage.playerState, playerStorage.options.viewability.vidCo, playerStorage.options.viewability.vidAd, playerStorage.options.viewability.firstVidAdMilliseconds, playerStorage.options.viewability.minMillisecondsBetweenVidAds);
 
   // Load the Phase III - Ads
   var phase3Exec;
@@ -14788,7 +14707,7 @@ function phase2Install() {
   top.ampTV.ampPhase2Setup = phase2Setup;
 }
 
-},{"./container/fluid":56,"./dom/isMobile":60,"./dom/viewport":61,"./log/log":63,"./observer/visible":65,"./player/adsManager":68,"./player/playListEnded":72,"./player/playStateObserver":74,"./player/trackAdRequestDone":75,"./player/vidAdCoSizes":76,"./timer/timePlaying":79,"./vidAd/timeOutFirstAd":84,"./vidCo/playlist15":85,"./vidCo/playlistHidden":86,"./vidCo/title":87,"./viewability/viewability":91,"./viewability/viewabilityState":92}],68:[function(require,module,exports){
+},{"./container/fluid":55,"./log/log":62,"./observer/visible":64,"./player/adsManager":67,"./player/playListEnded":71,"./player/playStateObserver":73,"./player/trackAdRequestDone":74,"./player/vidAdCoSizes":75,"./timer/timePlaying":78,"./vidAd/timeOutFirstAd":83,"./vidCo/playlist15":84,"./vidCo/playlistHidden":85,"./vidCo/title":86,"./viewability/viewability":90,"./viewability/viewabilityState":91}],67:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -14833,7 +14752,6 @@ var AdsManager = /*#__PURE__*/function () {
     this.playerStorage = playerStorage;
     this.getAdTag = getAdTag;
     this.tracker = trackerFactory;
-    this.content_type = undefined;
     this._adManagerPrepared = false;
     this._adManagerPluginInstalled = false;
     this.adPrepared = false;
@@ -15078,7 +14996,7 @@ var AdsManager = /*#__PURE__*/function () {
 }();
 exports.AdsManager = AdsManager;
 
-},{"../log/log":63,"./bringGoogleIMAObjectsToThisWindow":69}],69:[function(require,module,exports){
+},{"../log/log":62,"./bringGoogleIMAObjectsToThisWindow":68}],68:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15102,7 +15020,7 @@ function bringGoogleIMAObjectsToThisWindow() {
   }
 }
 
-},{"../log/log":63}],70:[function(require,module,exports){
+},{"../log/log":62}],69:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15143,7 +15061,7 @@ function expandDomains(whitelist) {
   return expandedWhitelist;
 }
 
-},{}],71:[function(require,module,exports){
+},{}],70:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15163,7 +15081,7 @@ function isPlayingAnAd(player) {
   return player.ads.isInAdMode() && player.ads.isAdPlaying() && !player.ads.isWaitingForAdBreak();
 }
 
-},{}],72:[function(require,module,exports){
+},{}],71:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15220,13 +15138,10 @@ function install(player, playerState) {
     if (!!e) {
       if (e.type === "error") {
         var _error = player.error();
-        if (_error.code === 0 || _error.code === 1 || _error.code === 2) {
+        if (_error.code === 2) {
           (0, _log.cLog)("NETWORK_ERROR. Fallback: Play next video on playlist", player);
           player.error(null);
           player.currentTime(0);
-          player.playlist.next();
-          exec();
-        } else if (_error.code === 3 || _error.code === 4 || _error.code === 5) {
           player.playlist.next();
           exec();
         }
@@ -15238,7 +15153,7 @@ function install(player, playerState) {
   player.on(['ended', 'error'], checkEnded);
 }
 
-},{"../log/log":63}],73:[function(require,module,exports){
+},{"../log/log":62}],72:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15403,7 +15318,7 @@ var playState = /*#__PURE__*/function () {
 }();
 exports.playState = playState;
 
-},{}],74:[function(require,module,exports){
+},{}],73:[function(require,module,exports){
 "use strict";
 
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
@@ -15530,7 +15445,7 @@ var playStateObserver = /*#__PURE__*/function (_playState) {
 }(_playState2.playState);
 exports.playStateObserver = playStateObserver;
 
-},{"../log/log":63,"./playState":73}],75:[function(require,module,exports){
+},{"../log/log":62,"./playState":72}],74:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15621,7 +15536,7 @@ var TrackAdRequestDone = /*#__PURE__*/function () {
 }();
 exports.TrackAdRequestDone = TrackAdRequestDone;
 
-},{"../log/log":63,"./bringGoogleIMAObjectsToThisWindow":69}],76:[function(require,module,exports){
+},{"../log/log":62,"./bringGoogleIMAObjectsToThisWindow":68}],75:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15662,7 +15577,7 @@ function checkVidAdCoSizes(getActualContainerSize, getActualVidAdCoSize) {
   actualVidAdCoSize[1] = finalSize[1];
 }
 
-},{}],77:[function(require,module,exports){
+},{}],76:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15694,7 +15609,7 @@ function checkAmpAffiliate() {
   var result = {};
   try {
     var ampAffConfig = top.ampAffiliate.getConfig(window, configID),
-      configurables = [['autoPlay', 'player_autoplay'], ['autoPlay', 'player_hide_before_autoplay'], ['muted', 'start_muted'], ['muted', 'ytMuted'], ['limitRenditionByPlayerDimensions', 'limitRenditionByPlayerDimensions'], ['useBandwidthFromLocalStorage', 'useBandwidthFromLocalStorage'], ['poster', 'videothumb'], ['ytVideo', 'ytVideoId'], ['videoTitle', 'title'], ['vidCoTitleHidden', 'vidCoTitleHidden'], ['videoDescriptionURL', 'video_description_url'], ['videoDescription', 'video_description'], ['videoDescription', 'evt_label'], ['styles', 'jsStyles'], ['vastURL', 'adTagUrlOrig'], ['vidCoAdUnit', 'vidCoAdUnit'], ['proxy', 'proxy'], ['playList', 'playList'], ['vidAdNonLinearAdMaxWidth', 'vidAdNonLinearAdMaxWidth'], ['vidAdNonLinearAdMaxHeight', 'vidAdNonLinearAdMaxHeight'], ['vidAdTryToResumeVidCo', 'vidAdTryToResumeVidCo'], ['vidAdOnFirstPreroll', 'vidAdOnFirstPreroll'], ['vidAdMaxTime', 'vidAdMaxTime'], ['volume_percentage', 'volume_percentage'], ['vidAdNumberOfRetries', 'vidAdNumberOfRetries'], ['vidAdDelayBetweenRetries', 'vidAdDelayBetweenRetries'], ['openwrapAccountId', 'openwrapAccountId'], ['openwrapProfileId', 'openwrapProfileId'], ['openwrapDelayVidAdUntilOwResponse', 'openwrapDelayVidAdUntilOwResponse'], ['openwrapMinCachedBids', 'openwrapMinCachedBids'], ['amazonHeaderBidderAccountId', 'amazonHeaderBidderAccountId'], ['amazonHeaderBidderSlotIDs', 'amazonHeaderBidderSlotIDs'], ['playListKWs', 'playListKWs'], ['playListUserInterface', 'playListUserInterface'], ['playListPreloadNum', 'playListPreloadNum'], ['delayPhase2', 'delayPhase2'], ['allowPlayListOverride', 'allowPlayListOverride'], ['size', 'size'], ['fluid', 'fluid'], ['logLevel', 'logLevel'], ['viewability', 'viewability'], ['ava', 'ava'], ['avaOnlyOnVidAd', 'avaOnlyOnVidAd'], ['avaSize', 'avaSize'], ['avaForceStartOnLoad', 'avaForceStartOnLoad'], ['avaForceFloatedOnVidad', 'avaForceFloatedOnVidad'], ['avaCloseDelayOnVidAd', 'avaCloseDelayOnVidAd'], ['avaCloseSize', 'avaCloseSize'], ['avaAvoidCLS', 'avaAvoidCLS'], ['dev', 'dev'], ['vidCoImpressions', 'vidCoImpressions'], ['vidCoAllowRepeatSameVideo', 'vidCoAllowRepeatSameVideo'], ['closeVidCo', 'closeVidCo'], ['closeVidCoSize', 'closeVidCoSize'], ['closeVidCoDelayedMS', 'closeVidCoDelayedMS'], ['closeVidCoIfNoAd', 'closeVidCoIfNoAd'], ['closeVidCoIfNoAdTimeoutMS', 'closeVidCoIfNoAdTimeoutMS'], ['closeVidCoOnAdEnd', 'closeVidCoOnAdEnd'], ['closeVidCoOnEnd', 'closeVidCoOnEnd'], ['observers', 'observers'], ['enforceWhitelist', 'enforceWhitelist'], ['whitelistedDomains', 'whitelistedDomains'], ['comScoreID', 'comScoreID'], ['context', 'context'], ['userOptions', 'userOptions']];
+      configurables = [['autoPlay', 'player_autoplay'], ['autoPlay', 'player_hide_before_autoplay'], ['muted', 'start_muted'], ['muted', 'ytMuted'], ['limitRenditionByPlayerDimensions', 'limitRenditionByPlayerDimensions'], ['useBandwidthFromLocalStorage', 'useBandwidthFromLocalStorage'], ['poster', 'videothumb'], ['ytVideo', 'ytVideoId'], ['videoTitle', 'title'], ['vidCoTitleHidden', 'vidCoTitleHidden'], ['videoDescriptionURL', 'video_description_url'], ['videoDescription', 'video_description'], ['videoDescription', 'evt_label'], ['styles', 'jsStyles'], ['vastURL', 'adTagUrlOrig'], ['vidCoAdUnit', 'vidCoAdUnit'], ['proxy', 'proxy'], ['playList', 'playList'], ['vidAdNonLinearAdMaxWidth', 'vidAdNonLinearAdMaxWidth'], ['vidAdNonLinearAdMaxHeight', 'vidAdNonLinearAdMaxHeight'], ['vidAdTryToResumeVidCo', 'vidAdTryToResumeVidCo'], ['vidAdOnFirstPreroll', 'vidAdOnFirstPreroll'], ['vidAdNumberOfRetries', 'vidAdNumberOfRetries'], ['vidAdDelayBetweenRetries', 'vidAdDelayBetweenRetries'], ['openwrapAccountId', 'openwrapAccountId'], ['openwrapProfileId', 'openwrapProfileId'], ['openwrapDelayVidAdUntilOwResponse', 'openwrapDelayVidAdUntilOwResponse'], ['openwrapMinCachedBids', 'openwrapMinCachedBids'], ['amazonHeaderBidderAccountId', 'amazonHeaderBidderAccountId'], ['amazonHeaderBidderSlotIDs', 'amazonHeaderBidderSlotIDs'], ['playListKWs', 'playListKWs'], ['playListUserInterface', 'playListUserInterface'], ['playListPreloadNum', 'playListPreloadNum'], ['delayPhase2', 'delayPhase2'], ['allowPlayListOverride', 'allowPlayListOverride'], ['size', 'size'], ['fluid', 'fluid'], ['logLevel', 'logLevel'], ['viewability', 'viewability'], ['ava', 'ava'], ['avaOnlyOnVidAd', 'avaOnlyOnVidAd'], ['avaSize', 'avaSize'], ['avaForceStartOnLoad', 'avaForceStartOnLoad'], ['avaForceFloatedOnVidad', 'avaForceFloatedOnVidad'], ['avaCloseDelayOnVidAd', 'avaCloseDelayOnVidAd'], ['avaCloseSize', 'avaCloseSize'], ['avaAvoidCLS', 'avaAvoidCLS'], ['dev', 'dev'], ['vidCoImpressions', 'vidCoImpressions'], ['vidCoAllowRepeatSameVideo', 'vidCoAllowRepeatSameVideo'], ['closeVidCo', 'closeVidCo'], ['closeVidCoSize', 'closeVidCoSize'], ['closeVidCoDelayedMS', 'closeVidCoDelayedMS'], ['closeVidCoIfNoAd', 'closeVidCoIfNoAd'], ['closeVidCoIfNoAdTimeoutMS', 'closeVidCoIfNoAdTimeoutMS'], ['closeVidCoOnAdEnd', 'closeVidCoOnAdEnd'], ['closeVidCoOnEnd', 'closeVidCoOnEnd'], ['observers', 'observers'], ['enforceWhitelist', 'enforceWhitelist'], ['whitelistedDomains', 'whitelistedDomains'], ['comScoreID', 'comScoreID'], ['context', 'context'], ['userOptions', 'userOptions']];
     console.log("Loaded! ampAffConfig", ampAffConfig);
     if (typeof ampAffConfig.vidAf !== 'undefined') {
       mergeOptions(ampAffConfig.vidAf, result);
@@ -15805,7 +15720,7 @@ function fillPlayList(vidAf) {
 }
 /* End Amp Affiliate */
 
-},{"./log/log":63,"./player/adsManager":68,"./player/playStateObserver":74}],78:[function(require,module,exports){
+},{"./log/log":62,"./player/adsManager":67,"./player/playStateObserver":73}],77:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15844,7 +15759,7 @@ exports.DocumentVisibility = DocumentVisibility;
 _defineProperty(DocumentVisibility, "startVisibilityObservers", []);
 _defineProperty(DocumentVisibility, "stopVisibilityObservers", []);
 
-},{}],79:[function(require,module,exports){
+},{}],78:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15907,7 +15822,7 @@ var TimePlaying = /*#__PURE__*/function () {
 }();
 exports.TimePlaying = TimePlaying;
 
-},{}],80:[function(require,module,exports){
+},{}],79:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16044,7 +15959,7 @@ var Timer = /*#__PURE__*/function () {
 }();
 exports.Timer = Timer;
 
-},{}],81:[function(require,module,exports){
+},{}],80:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16253,7 +16168,7 @@ var AmazonHeaderBidder = /*#__PURE__*/function () {
 }();
 exports.AmazonHeaderBidder = AmazonHeaderBidder;
 
-},{"../browser/queryString":51}],82:[function(require,module,exports){
+},{"../browser/queryString":51}],81:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16491,7 +16406,7 @@ var OpenWrap = /*#__PURE__*/function () {
 }();
 exports.OpenWrap = OpenWrap;
 
-},{"../browser/queryString":51,"../log/log":63}],83:[function(require,module,exports){
+},{"../browser/queryString":51,"../log/log":62}],82:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16549,7 +16464,7 @@ var VidAdQueue = /*#__PURE__*/function () {
 }();
 exports.VidAdQueue = VidAdQueue;
 
-},{"../consent/consent":55,"../vidCo/vast":88}],84:[function(require,module,exports){
+},{"../consent/consent":54,"../vidCo/vast":87}],83:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16578,7 +16493,7 @@ function installFirstAdTimeout(timeout, adManager, playerState) {
   adManager.observe("startedVidAd", clearTimeout);
 }
 
-},{"../log/log":63}],85:[function(require,module,exports){
+},{"../log/log":62}],84:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16605,7 +16520,7 @@ function getFirst15(playList) {
   return res;
 }
 
-},{}],86:[function(require,module,exports){
+},{}],85:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16625,7 +16540,7 @@ function show() {
   style = undefined;
 }
 
-},{"../dom/addStyles":58}],87:[function(require,module,exports){
+},{"../dom/addStyles":57}],86:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16705,7 +16620,7 @@ function title(root, parent, player) {
   });
 }
 
-},{"../dom/addStyles":58,"../log/log":63}],88:[function(require,module,exports){
+},{"../dom/addStyles":57,"../log/log":62}],87:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16804,7 +16719,7 @@ function adTagUrlReplacements(adTagUrl, actualSize, newCacheBuster, options) {
   return adTagUrl;
 }
 
-},{"../browser/queryString":51,"../log/log":63}],89:[function(require,module,exports){
+},{"../browser/queryString":51,"../log/log":62}],88:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17311,7 +17226,7 @@ var vidCo = /*#__PURE__*/function () {
 }();
 exports.vidCo = vidCo;
 
-},{"../browser/cookies.js":48,"../browser/queryString":51,"../browser/version":53,"../dom/htmlEntities":59,"../dom/isMobile":60,"../dom/viewport":61,"../log/log":63,"vast-client":40}],90:[function(require,module,exports){
+},{"../browser/cookies.js":48,"../browser/queryString":51,"../browser/version":53,"../dom/htmlEntities":58,"../dom/isMobile":59,"../dom/viewport":60,"../log/log":62,"vast-client":40}],89:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17478,7 +17393,7 @@ var vidCoVidAdViewabilityController = /*#__PURE__*/function () {
 }();
 exports.vidCoVidAdViewabilityController = vidCoVidAdViewabilityController;
 
-},{"../log/log":63,"../timer/timer":80}],91:[function(require,module,exports){
+},{"../log/log":62,"../timer/timer":79}],90:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17674,7 +17589,7 @@ var Viewability = /*#__PURE__*/function () {
 }();
 exports.Viewability = Viewability;
 
-},{"../log/log":63,"../observer/intersection":64,"../player/paused":71,"../timer/documentVisibility":78,"../timer/timer":80,"./vidCoVidAdViewabilityController":90}],92:[function(require,module,exports){
+},{"../log/log":62,"../observer/intersection":63,"../player/paused":70,"../timer/documentVisibility":77,"../timer/timer":79,"./vidCoVidAdViewabilityController":89}],91:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17720,4 +17635,4 @@ var viewabilityState = /*#__PURE__*/function () {
 }();
 exports.viewabilityState = viewabilityState;
 
-},{"../observer/visible":65}]},{},[66]);
+},{"../observer/visible":64}]},{},[65]);
