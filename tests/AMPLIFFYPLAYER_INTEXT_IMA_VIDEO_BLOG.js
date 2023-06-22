@@ -577,7 +577,9 @@ if (typeof top.ampVideoBlogProcessed === 'undefined' || !top.ampVideoBlogProcess
     }
     (0, _log.cLog)('addVideoToTheDOM(', idForNewVideo, itemAnchor, ')');
     top.ampTV.rootDocument = undefined;
-    addVideoToTheDOM(idForNewVideo, itemAnchor);
+    setTimeout(function () {
+      addVideoToTheDOM(idForNewVideo, itemAnchor);
+    }, 10);
   };
   top.ampVideoBlogProcessed = true;
   var useShadowRoot = (0, _shadowDOM.isShadowDOMAvailable)();
@@ -1701,6 +1703,7 @@ if (typeof top.ampVideoBlogProcessed === 'undefined' || !top.ampVideoBlogProcess
       size: iOS || Android ? [320, 180] : [640, 360],
       styles: 'body {overflow: hidden} ' + '.video-js .vjs-big-play-button, .video-js .title, .video-js .vjs-next-button {display: none !important;} ' + '.video-js { max-height:100vh; max-width:100vw }' + '.vid-iframe-amp { position: absolute; top:0; left:0; bottom:0; right:0; border: 0; overflow: hidden }' + '.vid-iframe-parent { position: relative; width: 100%; padding-bottom: 57% }' + '.vid-iframe-parent div, .vid-iframe-parent iframe { max-width:100vw; max-height:100vh; overflow: hidden; }' + '.vjs-playlist-sidebar { display: none }',
       vastURL: "//pubads.g.doubleclick.net/gampad/ads?sz=#WxH#&iu=/43606300/" + top.ampliffyTVVideoBlogAdUnit + "_VidAd_Lis_MC_AUTO&ciu_szs&impl=s&gdfp_req=1&env=vp&output=xml_vast3&unviewed_position_start=1&url=__page-url__&description_url=__item-description__&correlator=__timestamp__&cust_params=keyword%3Dampvidplayerpost__fbfan__,__item-category__%26title%3D__item-title__%26description%3D__item-description__%26file%3D__item-file__",
+      volume_percentage: undefined,
       vidAdSpecial: "",
       vidAdNonLinearAdMaxWidth: 1,
       vidAdNonLinearAdMaxHeight: 1,

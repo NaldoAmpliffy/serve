@@ -4166,10 +4166,12 @@ var AvaCSS = /*#__PURE__*/function (_Ava) {
       var iframe = this.playerStorage.getElementToFloat();
       if (this.playerStorage.rootDocument && this.playerStorage.rootDocument.nodeName && this.playerStorage.rootDocument.nodeName.match && this.playerStorage.rootDocument.nodeName.match(/-fragment/)) {
         if (this.playerStorage.rootDocument.host) {
-          this.playerStorage.rootDocument.host.style.zIndex = '';
-          var styleMap = window.getComputedStyle(this.playerStorage.rootDocument.host);
-          if (styleMap.position === 'relative') {
-            this.playerStorage.rootDocument.host.style.position = 'absolute';
+          if (this.playerStorage.rootDocument.host.id.match("_ads_iframe_")) {
+            this.playerStorage.rootDocument.host.style.zIndex = '';
+            var styleMap = window.getComputedStyle(this.playerStorage.rootDocument.host);
+            if (styleMap.position === 'relative') {
+              this.playerStorage.rootDocument.host.style.position = 'absolute';
+            }
           }
         }
       }
@@ -4382,6 +4384,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.Controller = void 0;
 var _ava = require("./ava");
 var _debounce = require("debounce");
+var _AdData = require("../vidAd/AdData");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
@@ -4391,12 +4394,14 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 var Controller = /*#__PURE__*/function () {
   function Controller(ava, isPaused) {
     var millisecondsBetweenSwitches = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1000;
+    var playerStorage = arguments.length > 3 ? arguments[3] : undefined;
     _classCallCheck(this, Controller);
     this.ava = ava;
     this.isPaused = isPaused;
     this.wantsAva = false;
     this.viewedCompletelyTS = undefined;
     this.debouncedChangeAvaStartStop = (0, _debounce.debounce)(this.changeAvaStartStop.bind(this), millisecondsBetweenSwitches);
+    this.playerStorage = playerStorage;
   }
   _createClass(Controller, [{
     key: "changeAvaStartStop",
@@ -4411,7 +4416,7 @@ var Controller = /*#__PURE__*/function () {
     key: "startAva",
     value: function startAva() {
       if (!this.viewedCompletelyTS) return false; // Not the moment yet
-
+      if ((0, _AdData.check_audio_volume)(this.playerStorage)) return false;
       this.wantsAva = true;
       if (this.isPaused()) {
         // We wait
@@ -4467,7 +4472,7 @@ var Controller = /*#__PURE__*/function () {
 }();
 exports.Controller = Controller;
 
-},{"./ava":3,"debounce":1}],8:[function(require,module,exports){
+},{"../vidAd/AdData":23,"./ava":3,"debounce":1}],8:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4579,6 +4584,7 @@ var _controller = require("./controller");
 var _intersection = require("../observer/intersection");
 var _paused = require("../player/paused");
 var _log = require("../log/log");
+var _AdData = require("../vidAd/AdData");
 function avaViewabilityLogic(ava, containerDomElement, player, playerStorage, viewabilityThresholdPlayer100, viewabilityThresholdPlayer80) {
   var millisecondsBetweenSwitches = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : 1000;
   var startAVAOnSetup = arguments.length > 7 && arguments[7] !== undefined ? arguments[7] : false;
@@ -4602,7 +4608,7 @@ function avaViewabilityLogic(ava, containerDomElement, player, playerStorage, vi
   var observer;
   if (viewabilityThresholdPlayer100) statusViewablePlayer100.threshold = Math.max(0.01, Math.min(viewabilityThresholdPlayer100, 0.99));
   if (viewabilityThresholdPlayer80) statusViewablePlayer80.threshold = Math.max(0.01, Math.min(viewabilityThresholdPlayer80, 0.99));
-  var avaController = new _controller.Controller(ava, _paused.isFullyPaused.bind(this, player), millisecondsBetweenSwitches);
+  var avaController = new _controller.Controller(ava, _paused.isFullyPaused.bind(this, player), millisecondsBetweenSwitches, playerStorage);
 
   // Setup the status objects where the viewabilityTimer Object will keep track.
   var timerKeepTrackVidAd = null;
@@ -4671,23 +4677,28 @@ function avaViewabilityLogic(ava, containerDomElement, player, playerStorage, vi
     return observer.dispose();
   });
   if (startAVAOnSetup) avaController.forceStartAva();
-  if (avaOnlyOnVidAd) {
-    (0, _log.cLog)("avaOnlyOnVidAd prepared");
+  if (avaOnlyOnVidAd || startAVAOnVidAdStart) {
+    (0, _log.cLog)("avaOnlyOnVidAd - startAVAOnVidAdStart prepared");
     player.on(['adstart', 'adsstart'], function () {
-      (0, _log.cLog)("avaOnlyOnVidAd launched", statusViewablePlayer80, statusViewablePlayer100);
+      (0, _log.cLog)("avaOnlyOnVidAd - startAVAOnVidAdStart launched", statusViewablePlayer80, statusViewablePlayer100);
+      if ((0, _AdData.check_audio_volume)(playerStorage)) {
+        avaController.wantsAva = false;
+        avaController.changeAvaStartStop();
+        return;
+      }
       if (!statusViewablePlayer80.viewable) avaController.forceStartAva();
     });
   }
-  if (startAVAOnVidAdStart) {
-    (0, _log.cLog)("startAVAOnVidAdStart prepared");
-    player.on(['adstart', 'adsstart'], function () {
-      (0, _log.cLog)("startAVAOnVidAdStart launched", statusViewablePlayer80, statusViewablePlayer100);
-      if (!statusViewablePlayer80.viewable) avaController.forceStartAva();
-    });
-  }
+
+  // If videoAd content_type is audio and volume{condition} is true, it will NOT trigger AVA mode
+  // Once the videoAd ends, the AVA mode should start 
+  player.on("adend", function () {
+    playerStorage.playerState.adManager.content_type = undefined;
+    if (!statusViewablePlayer80.viewable) avaController.forceStartAva();
+  });
 }
 
-},{"../log/log":17,"../observer/intersection":18,"../player/paused":21,"./controller":7}],10:[function(require,module,exports){
+},{"../log/log":17,"../observer/intersection":18,"../player/paused":21,"../vidAd/AdData":23,"./controller":7}],10:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5330,6 +5341,8 @@ var ampPhase3 = function ampPhase3(configID) {
         playerStorage.adsManagerIMA = adsManagerIMA;
         var volume = player.muted() || player.volume() < 0.001 ? 0 : player.volume();
         adsManagerIMA.setVolume(volume);
+        playerStorage.playerState.adManager.content_type = event.getAdData().contentType;
+        playerStorage.player.trigger("adsendonmaxtime");
       });
       var mobile = _construct(_isMobile.IsMobile, _toConsumableArray((0, _viewport.getTopViewPortSize)()));
       if (mobile.isMobile()) {} else {
@@ -5372,6 +5385,7 @@ var ampPhase3 = function ampPhase3(configID) {
     };
     var ready = function ready() {
       (0, _log.cLog)("IMA Ready");
+      var t_out_adsendonmaxtime = null;
       (0, _bringGoogleIMAObjectsToThisWindow.bringGoogleIMAObjectsToThisWindow)();
       var vpaidMode = !window.google || !window.google.ima || typeof window.google.ima.ImaSdkSettings.VpaidMode.INSECURE === 'undefined' ? 2 : window.google.ima.ImaSdkSettings.VpaidMode.INSECURE;
       var vpaidModeForced = vpaidMode;
@@ -5416,6 +5430,9 @@ var ampPhase3 = function ampPhase3(configID) {
         } else if (!playerStorage.options.autoPlay) playerStorage.playerState.adManager.prepareToLaunchFirstPreroll(imaOptions);
       }
       player.on(['adserror', 'adend'], function () {
+        if (!!t_out_adsendonmaxtime) {
+          clearTimeout(t_out_adsendonmaxtime);
+        }
         playerStorage.rootDocument.querySelectorAll('#' + player.id()).forEach(function (x) {
           return x.classList.remove('vjs-ad-loading');
         });
@@ -5427,6 +5444,14 @@ var ampPhase3 = function ampPhase3(configID) {
             playerStorage.player.play();
           }
         }, 500);
+      });
+      player.on("adsendonmaxtime", function () {
+        if (playerStorage.options.vidAdMaxTime) {
+          t_out_adsendonmaxtime = setTimeout(function () {
+            playerStorage.player.trigger("adend");
+            (0, _log.cLog)('[amp:event:one:adsendonmaxtime] Trigger end Ad manually. Controlled by vidAdMaxTime option.');
+          }, playerStorage.options.vidAdMaxTime * 1000);
+        }
       });
       var closeVidCoSetup = function closeVidCoSetup() {
         if (playerStorage.options.closeVidCo) {
@@ -5542,7 +5567,7 @@ if (configID === 0 && !phase3Exec) {
 }
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./ava/setup":8,"./consent/consent":12,"./dom/isMobile":13,"./dom/viewport":14,"./interstitial/closeCSS":16,"./log/log":17,"./player/bringGoogleIMAObjectsToThisWindow":20,"./player/trackAdRequestDone":22,"./vidCo/playlistGAM":23,"./vidCo/vast":24,"videojs-ima":2}],20:[function(require,module,exports){
+},{"./ava/setup":8,"./consent/consent":12,"./dom/isMobile":13,"./dom/viewport":14,"./interstitial/closeCSS":16,"./log/log":17,"./player/bringGoogleIMAObjectsToThisWindow":20,"./player/trackAdRequestDone":22,"./vidCo/playlistGAM":24,"./vidCo/vast":25,"videojs-ima":2}],20:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5683,6 +5708,32 @@ exports.TrackAdRequestDone = TrackAdRequestDone;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.check_audio_volume = check_audio_volume;
+exports.is_audio_content_type = is_audio_content_type;
+var _log = require("../log/log");
+function is_audio_content_type(player) {
+  var content_type = player.playerState.adManager.content_type;
+  if (!!content_type) {
+    if (content_type.search(/audio/ig) > -1) {
+      (0, _log.cLog)('[amp]:[ad:type] Audio');
+      return true;
+    }
+  }
+  return false;
+}
+function check_audio_volume(playerStorage) {
+  var volume_percentage = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0.05;
+  var player = playerStorage.player;
+  var volume = player.muted() || player.volume() < 0.001 ? 0 : player.volume();
+  return volume < volume_percentage && is_audio_content_type(playerStorage);
+}
+
+},{"../log/log":17}],24:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.getGAM = getGAM;
 exports.monitorPlaylist = monitorPlaylist;
 exports.populatePlaylist = populatePlaylist;
@@ -5734,7 +5785,7 @@ function checkPlaylist(vidCoObj, options, player) {
   }
 }
 
-},{"../log/log":17}],24:[function(require,module,exports){
+},{"../log/log":17}],25:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
