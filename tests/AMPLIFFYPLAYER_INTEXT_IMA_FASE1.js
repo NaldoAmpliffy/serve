@@ -14033,7 +14033,7 @@ var ampPhase1 = function ampPhase1(configID) {
       firstVidAdMilliseconds: 2000,
       minMillisecondsBetweenVidAds: 60000
     },
-    volumePercentage: 80,
+    volumePercentage: 50,
     vastURL: '',
     vidAdSpecial: '',
     vidAdNumberOfRetries: undefined,
