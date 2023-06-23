@@ -12303,8 +12303,7 @@ var IsMobile = /*#__PURE__*/function () {
   }, {
     key: "isIOS",
     value: function isIOS() {
-      // iPad on iOS 13 detection (/Mac/.test(navigator.userAgent) && "ontouchend" in document)
-      return /iPad Simulator|iPhone Simulator|iPod Simulator|iPhone|iPad|iPod/i.test(navigator.platform) || /Mac/.test(navigator.userAgent) && "ontouchend" in document;
+      return /iPhone|iPad|iPod/i.test(navigator.userAgent);
     }
   }, {
     key: "isAndroid",
@@ -14034,7 +14033,7 @@ var ampPhase1 = function ampPhase1(configID) {
       firstVidAdMilliseconds: 2000,
       minMillisecondsBetweenVidAds: 60000
     },
-    volume_percentage: undefined,
+    volumePercentage: 80,
     vastURL: '',
     vidAdSpecial: '',
     vidAdNumberOfRetries: undefined,
@@ -14527,10 +14526,10 @@ var ampPhase2 = function ampPhase2(configID) {
   if (configID.nodeName === 'IFRAME' && !window.useShadowRoot) top.ampTV.rootDocument = configID.contentDocument;else top.ampTV.rootDocument = playerStorage.rootDocument;
   //console.log("Creating Player with ID",playerId, configID);
   playerStorage.player = videojs(playerId, videoJSOptions, function () {
-    if (!!playerStorage.options.volume_percentage && playerStorage.options.volume_percentage >= 0) {
+    if (!!playerStorage.options.volumePercentage && playerStorage.options.volumePercentage >= 0) {
       var isMobile = _construct(_isMobile.IsMobile, _toConsumableArray((0, _viewport.getTopViewPortSize)()));
       if (!isMobile.isIOS()) {
-        this.volume(playerStorage.options.volume_percentage / 100);
+        this.volume(playerStorage.options.volumePercentage / 100);
       }
     }
   });
@@ -15695,7 +15694,7 @@ function checkAmpAffiliate() {
   var result = {};
   try {
     var ampAffConfig = top.ampAffiliate.getConfig(window, configID),
-      configurables = [['autoPlay', 'player_autoplay'], ['autoPlay', 'player_hide_before_autoplay'], ['muted', 'start_muted'], ['muted', 'ytMuted'], ['limitRenditionByPlayerDimensions', 'limitRenditionByPlayerDimensions'], ['useBandwidthFromLocalStorage', 'useBandwidthFromLocalStorage'], ['poster', 'videothumb'], ['ytVideo', 'ytVideoId'], ['videoTitle', 'title'], ['vidCoTitleHidden', 'vidCoTitleHidden'], ['videoDescriptionURL', 'video_description_url'], ['videoDescription', 'video_description'], ['videoDescription', 'evt_label'], ['styles', 'jsStyles'], ['vastURL', 'adTagUrlOrig'], ['vidCoAdUnit', 'vidCoAdUnit'], ['proxy', 'proxy'], ['playList', 'playList'], ['vidAdNonLinearAdMaxWidth', 'vidAdNonLinearAdMaxWidth'], ['vidAdNonLinearAdMaxHeight', 'vidAdNonLinearAdMaxHeight'], ['vidAdTryToResumeVidCo', 'vidAdTryToResumeVidCo'], ['vidAdOnFirstPreroll', 'vidAdOnFirstPreroll'], ['vidAdMaxTime', 'vidAdMaxTime'], ['volume_percentage', 'volume_percentage'], ['vidAdNumberOfRetries', 'vidAdNumberOfRetries'], ['vidAdDelayBetweenRetries', 'vidAdDelayBetweenRetries'], ['openwrapAccountId', 'openwrapAccountId'], ['openwrapProfileId', 'openwrapProfileId'], ['openwrapDelayVidAdUntilOwResponse', 'openwrapDelayVidAdUntilOwResponse'], ['openwrapMinCachedBids', 'openwrapMinCachedBids'], ['amazonHeaderBidderAccountId', 'amazonHeaderBidderAccountId'], ['amazonHeaderBidderSlotIDs', 'amazonHeaderBidderSlotIDs'], ['playListKWs', 'playListKWs'], ['playListUserInterface', 'playListUserInterface'], ['playListPreloadNum', 'playListPreloadNum'], ['delayPhase2', 'delayPhase2'], ['allowPlayListOverride', 'allowPlayListOverride'], ['size', 'size'], ['fluid', 'fluid'], ['logLevel', 'logLevel'], ['viewability', 'viewability'], ['ava', 'ava'], ['avaOnlyOnVidAd', 'avaOnlyOnVidAd'], ['avaSize', 'avaSize'], ['avaForceStartOnLoad', 'avaForceStartOnLoad'], ['avaForceFloatedOnVidad', 'avaForceFloatedOnVidad'], ['avaCloseDelayOnVidAd', 'avaCloseDelayOnVidAd'], ['avaCloseSize', 'avaCloseSize'], ['avaAvoidCLS', 'avaAvoidCLS'], ['dev', 'dev'], ['vidCoImpressions', 'vidCoImpressions'], ['vidCoAllowRepeatSameVideo', 'vidCoAllowRepeatSameVideo'], ['closeVidCo', 'closeVidCo'], ['closeVidCoSize', 'closeVidCoSize'], ['closeVidCoDelayedMS', 'closeVidCoDelayedMS'], ['closeVidCoIfNoAd', 'closeVidCoIfNoAd'], ['closeVidCoIfNoAdTimeoutMS', 'closeVidCoIfNoAdTimeoutMS'], ['closeVidCoOnAdEnd', 'closeVidCoOnAdEnd'], ['closeVidCoOnEnd', 'closeVidCoOnEnd'], ['observers', 'observers'], ['enforceWhitelist', 'enforceWhitelist'], ['whitelistedDomains', 'whitelistedDomains'], ['comScoreID', 'comScoreID'], ['context', 'context'], ['userOptions', 'userOptions']];
+      configurables = [['autoPlay', 'player_autoplay'], ['autoPlay', 'player_hide_before_autoplay'], ['muted', 'start_muted'], ['muted', 'ytMuted'], ['limitRenditionByPlayerDimensions', 'limitRenditionByPlayerDimensions'], ['useBandwidthFromLocalStorage', 'useBandwidthFromLocalStorage'], ['poster', 'videothumb'], ['ytVideo', 'ytVideoId'], ['videoTitle', 'title'], ['vidCoTitleHidden', 'vidCoTitleHidden'], ['videoDescriptionURL', 'video_description_url'], ['videoDescription', 'video_description'], ['videoDescription', 'evt_label'], ['styles', 'jsStyles'], ['vastURL', 'adTagUrlOrig'], ['vidCoAdUnit', 'vidCoAdUnit'], ['proxy', 'proxy'], ['playList', 'playList'], ['vidAdNonLinearAdMaxWidth', 'vidAdNonLinearAdMaxWidth'], ['vidAdNonLinearAdMaxHeight', 'vidAdNonLinearAdMaxHeight'], ['vidAdTryToResumeVidCo', 'vidAdTryToResumeVidCo'], ['vidAdOnFirstPreroll', 'vidAdOnFirstPreroll'], ['vidAdMaxTime', 'vidAdMaxTime'], ['volumePercentage', 'volumePercentage'], ['vidAdNumberOfRetries', 'vidAdNumberOfRetries'], ['vidAdDelayBetweenRetries', 'vidAdDelayBetweenRetries'], ['openwrapAccountId', 'openwrapAccountId'], ['openwrapProfileId', 'openwrapProfileId'], ['openwrapDelayVidAdUntilOwResponse', 'openwrapDelayVidAdUntilOwResponse'], ['openwrapMinCachedBids', 'openwrapMinCachedBids'], ['amazonHeaderBidderAccountId', 'amazonHeaderBidderAccountId'], ['amazonHeaderBidderSlotIDs', 'amazonHeaderBidderSlotIDs'], ['playListKWs', 'playListKWs'], ['playListUserInterface', 'playListUserInterface'], ['playListPreloadNum', 'playListPreloadNum'], ['delayPhase2', 'delayPhase2'], ['allowPlayListOverride', 'allowPlayListOverride'], ['size', 'size'], ['fluid', 'fluid'], ['logLevel', 'logLevel'], ['viewability', 'viewability'], ['ava', 'ava'], ['avaOnlyOnVidAd', 'avaOnlyOnVidAd'], ['avaSize', 'avaSize'], ['avaForceStartOnLoad', 'avaForceStartOnLoad'], ['avaForceFloatedOnVidad', 'avaForceFloatedOnVidad'], ['avaCloseDelayOnVidAd', 'avaCloseDelayOnVidAd'], ['avaCloseSize', 'avaCloseSize'], ['avaAvoidCLS', 'avaAvoidCLS'], ['dev', 'dev'], ['vidCoImpressions', 'vidCoImpressions'], ['vidCoAllowRepeatSameVideo', 'vidCoAllowRepeatSameVideo'], ['closeVidCo', 'closeVidCo'], ['closeVidCoSize', 'closeVidCoSize'], ['closeVidCoDelayedMS', 'closeVidCoDelayedMS'], ['closeVidCoIfNoAd', 'closeVidCoIfNoAd'], ['closeVidCoIfNoAdTimeoutMS', 'closeVidCoIfNoAdTimeoutMS'], ['closeVidCoOnAdEnd', 'closeVidCoOnAdEnd'], ['closeVidCoOnEnd', 'closeVidCoOnEnd'], ['observers', 'observers'], ['enforceWhitelist', 'enforceWhitelist'], ['whitelistedDomains', 'whitelistedDomains'], ['comScoreID', 'comScoreID'], ['context', 'context'], ['userOptions', 'userOptions']];
     console.log("Loaded! ampAffConfig", ampAffConfig);
     if (typeof ampAffConfig.vidAf !== 'undefined') {
       mergeOptions(ampAffConfig.vidAf, result);

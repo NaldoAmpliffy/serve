@@ -4871,8 +4871,7 @@ var IsMobile = /*#__PURE__*/function () {
   }, {
     key: "isIOS",
     value: function isIOS() {
-      // iPad on iOS 13 detection (/Mac/.test(navigator.userAgent) && "ontouchend" in document)
-      return /iPad Simulator|iPhone Simulator|iPod Simulator|iPhone|iPad|iPod/i.test(navigator.platform) || /Mac/.test(navigator.userAgent) && "ontouchend" in document;
+      return /iPhone|iPad|iPod/i.test(navigator.userAgent);
     }
   }, {
     key: "isAndroid",
@@ -5723,10 +5722,10 @@ function is_audio_content_type(player) {
   return false;
 }
 function check_audio_volume(playerStorage) {
-  var volume_percentage = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0.05;
+  var volumePercentage = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0.05;
   var player = playerStorage.player;
   var volume = player.muted() || player.volume() < 0.001 ? 0 : player.volume();
-  return volume < volume_percentage && is_audio_content_type(playerStorage);
+  return volume < volumePercentage && is_audio_content_type(playerStorage);
 }
 
 },{"../log/log":17}],24:[function(require,module,exports){
